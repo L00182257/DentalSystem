@@ -2,8 +2,8 @@ package tester;
 
 import java.util.List;
 import java.util.Scanner;
-import model.Treatment;
 import model.TreatmentCRUD;
+import model.TreatmentCRUD.Treatment;
 
 public class TreatmentCRUDTester {
     private static final Scanner scanner = new Scanner(System.in);
@@ -49,16 +49,14 @@ public class TreatmentCRUDTester {
 
     private static void addTreatment() {
         System.out.println("\nEnter Treatment Details:");
-        System.out.print("Type: ");
-        String type = scanner.nextLine();
-
+        System.out.print("Treatment Type: ");
+        String treatmentType = scanner.nextLine();
         System.out.print("Price: ");
-        double price = getDoubleInput();
-
+        int price = getIntInput();
         System.out.print("Length (minutes): ");
         int length = getIntInput();
 
-        Treatment treatment = new Treatment(0, type, price, length);
+        Treatment treatment = new Treatment(0, treatmentType, price, length);
         treatmentCRUD.addTreatment(treatment);
         System.out.println("Treatment added successfully!");
     }
@@ -70,8 +68,7 @@ public class TreatmentCRUDTester {
         } else {
             System.out.println("\nList of Treatments:");
             for (Treatment t : treatments) {
-                System.out.println("ID: " + t.getTreatmentID() + ", Type: " + t.getTreatmentType() +
-                        ", Price: " + t.getPrice() + ", Length: " + t.getLength() + " minutes");
+                System.out.println("ID: " + t.getTreatmentID() + " | Type: " + t.getTreatmentType() + " | Price: $" + t.getPrice() + " | Length: " + t.getLength() + " mins");
             }
         }
     }
@@ -80,12 +77,12 @@ public class TreatmentCRUDTester {
         System.out.print("\nEnter Treatment ID to search: ");
         int id = getIntInput();
         Treatment treatment = treatmentCRUD.getTreatmentById(id);
-
+        
         if (treatment != null) {
             System.out.println("\nTreatment Found:");
             System.out.println("ID: " + treatment.getTreatmentID());
             System.out.println("Type: " + treatment.getTreatmentType());
-            System.out.println("Price: " + treatment.getPrice());
+            System.out.println("Price: $" + treatment.getPrice());
             System.out.println("Length: " + treatment.getLength() + " minutes");
         } else {
             System.out.println("Treatment not found.");
@@ -103,20 +100,19 @@ public class TreatmentCRUDTester {
         }
 
         System.out.println("\nUpdating Treatment Details (Leave blank to keep existing values):");
+        System.out.print("New Treatment Type (" + existingTreatment.getTreatmentType() + "): ");
+        String treatmentType = scanner.nextLine();
+        if (treatmentType.isEmpty()) treatmentType = existingTreatment.getTreatmentType();
 
-        System.out.print("Type (" + existingTreatment.getTreatmentType() + "): ");
-        String type = scanner.nextLine();
-        if (type.isEmpty()) type = existingTreatment.getTreatmentType();
-
-        System.out.print("Price (" + existingTreatment.getPrice() + "): ");
+        System.out.print("New Price ($" + existingTreatment.getPrice() + "): ");
         String priceInput = scanner.nextLine();
-        double price = priceInput.isEmpty() ? existingTreatment.getPrice() : Double.parseDouble(priceInput);
+        int price = priceInput.isEmpty() ? existingTreatment.getPrice() : Integer.parseInt(priceInput);
 
-        System.out.print("Length (" + existingTreatment.getLength() + " minutes): ");
+        System.out.print("New Length (" + existingTreatment.getLength() + " minutes): ");
         String lengthInput = scanner.nextLine();
         int length = lengthInput.isEmpty() ? existingTreatment.getLength() : Integer.parseInt(lengthInput);
 
-        Treatment updatedTreatment = new Treatment(id, type, price, length);
+        Treatment updatedTreatment = new Treatment(id, treatmentType, price, length);
         treatmentCRUD.updateTreatment(updatedTreatment);
         System.out.println("Treatment updated successfully!");
     }
@@ -148,17 +144,7 @@ public class TreatmentCRUDTester {
             scanner.next();
         }
         int value = scanner.nextInt();
-        scanner.nextLine();  // Clear buffer
-        return value;
-    }
-
-    private static double getDoubleInput() {
-        while (!scanner.hasNextDouble()) {
-            System.out.print("Invalid input. Enter a valid number: ");
-            scanner.next();
-        }
-        double value = scanner.nextDouble();
-        scanner.nextLine();  // Clear buffer
+        scanner.nextLine(); // Clear buffer
         return value;
     }
 }
