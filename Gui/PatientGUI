@@ -1,0 +1,188 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+
+public class PatientGUI extends JFrame {
+
+    private PatientDAO patientDAO;
+    private JTextField firstNameField, lastNameField, dateOfBirthField, emailField, streetField, townField, countyField, eircodeField;
+    private JCheckBox medCardCheckBox;
+    private JTextArea patientListArea;
+
+    public PatientGUI() {
+        // Initialize the PatientDAO
+        patientDAO = new PatientDAO();
+
+        // Frame setup
+        setTitle("Patient Management");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // Create components
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(10, 2));
+
+        inputPanel.add(new JLabel("First Name:"));
+        firstNameField = new JTextField();
+        inputPanel.add(firstNameField);
+
+        inputPanel.add(new JLabel("Last Name:"));
+        lastNameField = new JTextField();
+        inputPanel.add(lastNameField);
+
+        inputPanel.add(new JLabel("Date of Birth:"));
+        dateOfBirthField = new JTextField();
+        inputPanel.add(dateOfBirthField);
+
+        inputPanel.add(new JLabel("Email:"));
+        emailField = new JTextField();
+        inputPanel.add(emailField);
+
+        inputPanel.add(new JLabel("Street:"));
+        streetField = new JTextField();
+        inputPanel.add(streetField);
+
+        inputPanel.add(new JLabel("Town:"));
+        townField = new JTextField();
+        inputPanel.add(townField);
+
+        inputPanel.add(new JLabel("County:"));
+        countyField = new JTextField();
+        inputPanel.add(countyField);
+
+        inputPanel.add(new JLabel("Eircode:"));
+        eircodeField = new JTextField();
+        inputPanel.add(eircodeField);
+
+        inputPanel.add(new JLabel("Medical Card:"));
+        medCardCheckBox = new JCheckBox();
+        inputPanel.add(medCardCheckBox);
+
+        // Add inputPanel to the frame
+        add(inputPanel, BorderLayout.NORTH);
+
+        // Create buttons and their actions
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+
+        JButton addButton = new JButton("Add Patient");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPatient();
+            }
+        });
+        buttonPanel.add(addButton);
+
+        JButton updateButton = new JButton("Update Patient");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updatePatient();
+            }
+        });
+        buttonPanel.add(updateButton);
+
+        JButton deleteButton = new JButton("Delete Patient");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deletePatient();
+            }
+        });
+        buttonPanel.add(deleteButton);
+
+        JButton viewButton = new JButton("View All Patients");
+        viewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewAllPatients();
+            }
+        });
+        buttonPanel.add(viewButton);
+
+        add(buttonPanel, BorderLayout.CENTER);
+
+        // Text area to show patient list
+        patientListArea = new JTextArea(10, 40);
+        patientListArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(patientListArea);
+        add(scrollPane, BorderLayout.SOUTH);
+    }
+
+    private void addPatient() {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String dateOfBirth = dateOfBirthField.getText();
+        String email = emailField.getText();
+        String street = streetField.getText();
+        String town = townField.getText();
+        String county = countyField.getText();
+        String eircode = eircodeField.getText();
+        Boolean medCard = medCardCheckBox.isSelected();
+
+        Patient patient = new Patient(0, firstName, lastName, dateOfBirth, email, street, town, county, eircode, medCard);
+        patientDAO.addPatient(patient);
+        clearFields();
+    }
+
+    private void updatePatient() {
+        // In a real application, you'd want to add a mechanism to choose a patient to update (e.g., search by ID).
+        // Here, I'm assuming you want to update the currently filled form.
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String dateOfBirth = dateOfBirthField.getText();
+        String email = emailField.getText();
+        String street = streetField.getText();
+        String town = townField.getText();
+        String county = countyField.getText();
+        String eircode = eircodeField.getText();
+        Boolean medCard = medCardCheckBox.isSelected();
+
+        // Assuming patient ID is being passed and is in some way tracked in the form.
+        Patient patient = new Patient(0, firstName, lastName, dateOfBirth, email, street, town, county, eircode, medCard);
+        patientDAO.updatePatient(patient);
+        clearFields();
+    }
+
+    private void deletePatient() {
+        // In a real application, you'd need to select a patient to delete.
+        // For now, we'll assume we're deleting by a provided ID from a form or other input.
+        String idString = JOptionPane.showInputDialog("Enter Patient ID to delete:");
+        if (idString != null && !idString.isEmpty()) {
+            int id = Integer.parseInt(idString);
+            patientDAO.deletePatient(id);
+        }
+    }
+
+    private void viewAllPatients() {
+        List<Patient> patients = patientDAO.getAllPatients();
+        patientListArea.setText("");
+        for (Patient patient : patients) {
+            patientListArea.append(patient.toString() + "\n");
+        }
+    }
+
+    private void clearFields() {
+        firstNameField.setText("");
+        lastNameField.setText("");
+        dateOfBirthField.setText("");
+        emailField.setText("");
+        streetField.setText("");
+        townField.setText("");
+        countyField.setText("");
+        eircodeField.setText("");
+        medCardCheckBox.setSelected(false);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new PatientGUI().setVisible(true);
+            }
+        });
+    }
+}
