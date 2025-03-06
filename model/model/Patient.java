@@ -2,7 +2,7 @@ package model;
 
 
 public class Patient{
-    private int id;
+    private int patientID;
     private String firstName;
     private String lastName;
     private String dateOfBirth;
@@ -13,8 +13,8 @@ public class Patient{
     private String eircode;
     private Boolean medCard;
 
-    public Patient(int id,String firstName, String lastName, String dateOfBirth, String email, String street, String town, String county, String eircode, Boolean medCard) {
-        this.id = id;
+    public Patient(int patientID,String firstName, String lastName, String dateOfBirth, String email, String street, String town, String county, String eircode, Boolean medCard) {
+        this.patientID = patientID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -25,8 +25,8 @@ public class Patient{
         this.eircode = eircode;
         this.medCard = medCard;    
     }
-    public void setID(int id) {
-        this.id = id;
+    public void setPatientID(int patientID) {
+        this.patientID = patientID;
     }
 
     public void setFirstName(String firstName) {
@@ -61,9 +61,10 @@ public class Patient{
         this.eircode = eircode;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getPatientID() {
+        return patientID; 
+       }
+
 
     public String getFirstName() {
         return firstName;
@@ -104,7 +105,7 @@ public class Patient{
     @Override
     public String toString() {
         return "Patient{" +
-           "id=" + id +
+           "id=" + patientID +
            ", firstName='" + firstName + '\'' +
            ", lastName='" + lastName + '\'' +
            ", dateOfBirth='" + dateOfBirth + '\'' +

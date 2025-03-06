@@ -3,13 +3,13 @@ package tester;
 import java.util.List;
 import java.util.Scanner;
 
-
 import model.Patient;
 import model.PatientDAO;
 
 public class PatientTester {
+
     private static final Scanner scanner = new Scanner(System.in);
-    private static final Patient.PatientDAO patientDAO = new Patient().new PatientDAO();
+    private static final PatientDAO patientDAO = new PatientDAO();
 
     public static void main(String[] args) {
         while (true) {
@@ -41,7 +41,7 @@ public class PatientTester {
                     break;
                 case 6:
                     System.out.println("Exiting... Goodbye!");
-                    scanner.close();  
+                    scanner.close();
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -91,7 +91,7 @@ public class PatientTester {
         } else {
             System.out.println("\nList of Patients:");
             for (Patient p : patients) {
-                System.out.println("ID: " + p.getId() + " | Name: " + p.getFirstName() + " " + p.getLastName() + " | Email: " + p.getEmail());
+                System.out.println("ID: " + p.getPatientID() + " | Name: " + p.getFirstName() + " " + p.getLastName() + " | Email: " + p.getEmail());
             }
         }
     }
@@ -103,7 +103,7 @@ public class PatientTester {
 
         if (patient != null) {
             System.out.println("\nPatient Found:");
-            System.out.println("ID: " + patient.getId());
+            System.out.println("ID: " + patient.getPatientID());
             System.out.println("Name: " + patient.getFirstName() + " " + patient.getLastName());
             System.out.println("Email: " + patient.getEmail());
             System.out.println("Date of Birth: " + patient.getDOB());
@@ -131,35 +131,51 @@ public class PatientTester {
 
         System.out.print("First Name (" + existingPatient.getFirstName() + "): ");
         String firstName = scanner.nextLine();
-        if (firstName.isEmpty()) firstName = existingPatient.getFirstName();
+        if (firstName.isEmpty()) {
+            firstName = existingPatient.getFirstName();
+        }
 
         System.out.print("Last Name (" + existingPatient.getLastName() + "): ");
         String lastName = scanner.nextLine();
-        if (lastName.isEmpty()) lastName = existingPatient.getLastName();
+        if (lastName.isEmpty()) {
+            lastName = existingPatient.getLastName();
+        }
 
         System.out.print("Date of Birth (" + existingPatient.getDOB() + "): ");
         String dateOfBirth = scanner.nextLine();
-        if (dateOfBirth.isEmpty()) dateOfBirth = existingPatient.getDOB();
+        if (dateOfBirth.isEmpty()) {
+            dateOfBirth = existingPatient.getDOB();
+        }
 
         System.out.print("Email (" + existingPatient.getEmail() + "): ");
         String email = scanner.nextLine();
-        if (email.isEmpty()) email = existingPatient.getEmail();
+        if (email.isEmpty()) {
+            email = existingPatient.getEmail();
+        }
 
         System.out.print("Street (" + existingPatient.getStreet() + "): ");
         String street = scanner.nextLine();
-        if (street.isEmpty()) street = existingPatient.getStreet();
+        if (street.isEmpty()) {
+            street = existingPatient.getStreet();
+        }
 
         System.out.print("Town (" + existingPatient.getTown() + "): ");
         String town = scanner.nextLine();
-        if (town.isEmpty()) town = existingPatient.getTown();
+        if (town.isEmpty()) {
+            town = existingPatient.getTown();
+        }
 
         System.out.print("County (" + existingPatient.getCounty() + "): ");
         String county = scanner.nextLine();
-        if (county.isEmpty()) county = existingPatient.getCounty();
+        if (county.isEmpty()) {
+            county = existingPatient.getCounty();
+        }
 
         System.out.print("Eircode (" + existingPatient.getEircode() + "): ");
         String eircode = scanner.nextLine();
-        if (eircode.isEmpty()) eircode = existingPatient.getEircode();
+        if (eircode.isEmpty()) {
+            eircode = existingPatient.getEircode();
+        }
 
         System.out.print("Medical Card (" + existingPatient.getMedCard() + "): ");
         String medCardInput = scanner.nextLine();
@@ -198,11 +214,10 @@ public class PatientTester {
             scanner.next();
         }
         int value = scanner.nextInt();
-        scanner.nextLine();  
+        scanner.nextLine();
         return value;
     }
 
-   
     private static Boolean getBooleanInput() {
         while (true) {
             String input = scanner.nextLine().toLowerCase();

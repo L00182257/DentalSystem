@@ -1,6 +1,5 @@
-package dao;
+package model;
 
-import model.Patient;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +33,8 @@ public class PatientDAO {
             if (rowsAffected > 0) {
                 ResultSet generatedKeys = statement.getGeneratedKeys();
                 if (generatedKeys.next()) {
-                    patient.setId(generatedKeys.getInt(1));
-                    System.out.println("Patient added successfully! ID: " + patient.getId());
+                    patient.setPatientID(generatedKeys.getInt(1));
+                    System.out.println("Patient added successfully! ID: " + patient.getPatientID());
                 }
             }
         } catch (SQLException e) {
