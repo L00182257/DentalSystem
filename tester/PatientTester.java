@@ -221,9 +221,9 @@ public class PatientTester {
     private static Boolean getBooleanInput() {
         while (true) {
             String input = scanner.nextLine().toLowerCase();
-            if (input.equals("true")) {
+            if (input.equals("yes")) {
                 return true;
-            } else if (input.equals("false")) {
+            } else if (input.equals("no")) {
                 return false;
             } else {
                 System.out.print("Invalid input. Please enter 'true' or 'false': ");
