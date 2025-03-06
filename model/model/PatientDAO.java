@@ -7,7 +7,7 @@ import java.util.List;
 public class PatientDAO {
 
     private static Connection getConnection() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/dentalsystem"; 
+        String url = "jdbc:mysql://localhost:3306/dentistdb"; 
         String username = "root";
         String password = "password"; 
         return DriverManager.getConnection(url, username, password);
