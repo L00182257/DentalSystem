@@ -114,7 +114,7 @@ public class PatientDAO {
             statement.setString(7, patient.getCounty());
             statement.setString(8, patient.getEircode());
             statement.setBoolean(9, patient.getMedCard());
-            statement.setInt(10, patient.getId());
+            statement.setInt(10, patient.getPatientID());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
