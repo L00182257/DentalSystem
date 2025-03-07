@@ -75,7 +75,7 @@ public class PatientTester {
         System.out.print("Eircode: ");
         String eircode = scanner.nextLine();
 
-        System.out.print("Do you have a medical card? (true/false): ");
+        System.out.print("Do you have a medical card? (Yes/No): ");
         Boolean medCard = getBooleanInput();
 
         Patient patient = new Patient(0, firstName, lastName, dateOfBirth, email, street, town, county, eircode, medCard);
@@ -226,7 +226,7 @@ public class PatientTester {
             } else if (input.equals("no")) {
                 return false;
             } else {
-                System.out.print("Invalid input. Please enter 'true' or 'false': ");
+                System.out.print("Invalid input. Please enter 'yes' or 'no': ");
             }
         }
     }
