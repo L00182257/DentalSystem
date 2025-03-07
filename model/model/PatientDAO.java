@@ -14,7 +14,7 @@ public class PatientDAO {
     }
 
     public void addPatient(Patient patient) {
-        String query = "INSERT INTO patients (first_name, last_name, date_of_birth, email, street, town, county, eircode, medical_card) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Patient (FirstName, LastName, DateOfBirth, Email, Street, Town, County, Eircode, MedicalCard) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -44,7 +44,7 @@ public class PatientDAO {
 
     public List<Patient> getAllPatients() {
         List<Patient> patients = new ArrayList<>();
-        String query = "SELECT * FROM patients";
+        String query = "SELECT * FROM Patient";
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
@@ -52,16 +52,16 @@ public class PatientDAO {
 
             while (resultSet.next()) {
                 Patient patient = new Patient(
-                    resultSet.getInt("id"),
-                    resultSet.getString("first_name"),
-                    resultSet.getString("last_name"),
-                    resultSet.getString("date_of_birth"),
-                    resultSet.getString("email"),
-                    resultSet.getString("street"),
-                    resultSet.getString("town"),
-                    resultSet.getString("county"),
-                    resultSet.getString("eircode"),
-                    resultSet.getBoolean("medical_card")
+                    resultSet.getInt("PatientID"),
+                    resultSet.getString("FirstName"),
+                    resultSet.getString("LastName"),
+                    resultSet.getString("DateOfBirth"),
+                    resultSet.getString("Email"),
+                    resultSet.getString("Street"),
+                    resultSet.getString("Town"),
+                    resultSet.getString("County"),
+                    resultSet.getString("Eircode"),
+                    resultSet.getBoolean("MedicalCard")
                 );
                 patients.add(patient);
             }
@@ -71,27 +71,27 @@ public class PatientDAO {
         return patients;
     }
 
-    public Patient getPatientById(int id) {
-        String query = "SELECT * FROM patients WHERE id = ?";
+    public Patient getPatientById(int patientID) {
+        String query = "SELECT * FROM Patient WHERE id = ?";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setInt(1, id);
+            statement.setInt(1, patientID);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 return new Patient(
-                    resultSet.getInt("id"),
-                    resultSet.getString("first_name"),
-                    resultSet.getString("last_name"),
-                    resultSet.getString("date_of_birth"),
-                    resultSet.getString("email"),
-                    resultSet.getString("street"),
-                    resultSet.getString("town"),
-                    resultSet.getString("county"),
-                    resultSet.getString("eircode"),
-                    resultSet.getBoolean("medical_card")
+                    resultSet.getInt("PatientID"),
+                    resultSet.getString("FirstName"),
+                    resultSet.getString("LastName"),
+                    resultSet.getString("DateOfBirth"),
+                    resultSet.getString("Email"),
+                    resultSet.getString("Street"),
+                    resultSet.getString("Town"),
+                    resultSet.getString("County"),
+                    resultSet.getString("Eircode"),
+                    resultSet.getBoolean("MedicalCard")
                 );
             }
         } catch (SQLException e) {
@@ -101,7 +101,7 @@ public class PatientDAO {
     }
 
     public void updatePatient(Patient patient) {
-        String query = "UPDATE patients SET first_name = ?, last_name = ?, date_of_birth = ?, email = ?, street = ?, town = ?, county = ?, eircode = ?, medical_card = ? WHERE id = ?";
+        String query = "UPDATE patients SET FirstName = ?, LastName = ?, DateOfBirth = ?, Email = ?, Street = ?, Town = ?, County = ?, Eircode = ?, MedicalCard = ? WHERE PatientID = ?";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -125,12 +125,12 @@ public class PatientDAO {
         }
     }
 
-    public void deletePatient(int id) {
-        String query = "DELETE FROM patients WHERE id = ?";
+    public void deletePatient(int patientID) {
+        String query = "DELETE FROM patients WHERE PatientID = ?";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setInt(1, id);
+            statement.setInt(1, patientID);
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
