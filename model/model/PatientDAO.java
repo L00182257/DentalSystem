@@ -72,7 +72,7 @@ public class PatientDAO {
     }
 
     public Patient getPatientById(int patientID) {
-        String query = "SELECT * FROM Patient WHERE id = ?";
+        String query = "SELECT * FROM Patient WHERE PatientID = ?";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -141,3 +141,4 @@ public class PatientDAO {
         }
     }
 }
+
