@@ -57,3 +57,13 @@ VALUES
     ('Taylor', 'Sarah', 'Irish Dental Council', 'Orthodontics', '1982-03-10', '353 1 2345678'),
     ('Johnson', 'Mark', 'Irish Dental Council', 'General Dentistry', '1978-08-22', '353 1 8765432'),
     ('Williams', 'Olivia', 'Royal College of Surgeons in Ireland', 'Periodontics', '1990-07-14', '353 1 1122334');
+
+
+-- Inserting Treatments
+INSERT INTO Treatment (TreatmentType, Price, Length)
+VALUES
+    ('Teeth Whitening', 250.00, 45),
+    ('Dental Checkup', 100.00, 30),
+    ('Root Canal', 500.00, 90),
+    ('Braces Consultation', 150.00, 60),
+    ('Cavity Filling', 200.00, 40);
