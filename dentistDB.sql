@@ -44,22 +44,19 @@ CREATE TABLE Appointment (
     FOREIGN KEY (DentistID) REFERENCES Dentist(DentistID) ON DELETE CASCADE
 );
 
+-- Inserting Patients
 INSERT INTO Patient (LastName, FirstName, DateOfBirth, Email, Street, Town, County, Eircode, MedicalCard)
 VALUES
     ('Doe', 'John', '1985-06-15', 'johndoe@example.com', '123 Main St', 'Dublin', 'Dublin', 'D01 ABC', TRUE),
     ('Smith', 'Emily', '1990-11-30', 'emilysmith@example.com', '456 Oak St', 'Cork', 'Cork', 'T12 XYZ', FALSE),
-    ('Brown', 'Michael', '1975-02-20', 'michaelbrown@example.com', '789 Pine Rd', 'Limerick', 'Limerick', 'V94 123', TRUE),
-    ('McLaughlin', 'Noah', '2005-10-10', 'BigMan123@gmail.com', '16 Ohiovile', 'Bunc', 'Donegal', 'F32 JH33', TRUE),
-    ('Friel', 'Darren', '1899-04-20', 'HungDaddy8@Hotmail.com', '1 SwagSt', 'Novigrad', 'Redania', 'F69 HH88', FALSE),
-    ('Olana', 'Rox', '2013-07-14', 'DealCollege4Life@outlook.com', '18 WomanSt', 'Killybegs', 'Odessa', 'F12 RT21', FALSE);
+    ('Brown', 'Michael', '1975-02-20', 'michaelbrown@example.com', '789 Pine Rd', 'Limerick', 'Limerick', 'V94 123', TRUE);
 
 -- Inserting Dentists
 INSERT INTO Dentist (LastName, FirstName, AwardingBody, Specialty, DateOfBirth, PhoneNo)
 VALUES
-    ('Taylor', 'Sarah', 'Irish Dental Council', 'Orthodontics', '1982-03-10', '35312345678'),
-    ('Johnson', 'Mark', 'Irish Dental Council', 'General Dentistry', '1978-08-22', '35318765432'),
-    ('Williams', 'Olivia', 'Royal College of Surgeons in Ireland', 'Periodontics', '1990-07-14', '35311122334'),
-    ('Kako', 'Ibrahim', 'GoatSelecters', 'CodeMaster', '2090-11-11', '087 1 2345543');
+    ('Taylor', 'Sarah', 'Irish Dental Council', 'Orthodontics', '1982-03-10', '0897897788'),
+    ('Johnson', 'Mark', 'Irish Dental Council', 'General Dentistry', '1978-08-22', '0897897732'),
+    ('Williams', 'Olivia', 'Royal College of Surgeons in Ireland', 'Periodontics', '1990-07-14', '0877567788');
 
 
 -- Inserting Treatments
