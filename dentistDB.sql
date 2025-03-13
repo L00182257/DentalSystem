@@ -43,3 +43,17 @@ CREATE TABLE Appointment (
     FOREIGN KEY (PatientID) REFERENCES Patient(PatientID) ON DELETE CASCADE,
     FOREIGN KEY (DentistID) REFERENCES Dentist(DentistID) ON DELETE CASCADE
 );
+
+-- Inserting Patients
+INSERT INTO Patient (LastName, FirstName, DateOfBirth, Email, Street, Town, County, Eircode, MedicalCard)
+VALUES
+    ('Doe', 'John', '1985-06-15', 'johndoe@example.com', '123 Main St', 'Dublin', 'Dublin', 'D01 ABC', TRUE),
+    ('Smith', 'Emily', '1990-11-30', 'emilysmith@example.com', '456 Oak St', 'Cork', 'Cork', 'T12 XYZ', FALSE),
+    ('Brown', 'Michael', '1975-02-20', 'michaelbrown@example.com', '789 Pine Rd', 'Limerick', 'Limerick', 'V94 123', TRUE);
+
+-- Inserting Dentists
+INSERT INTO Dentist (LastName, FirstName, AwardingBody, Specialty, DateOfBirth, PhoneNo)
+VALUES
+    ('Taylor', 'Sarah', 'Irish Dental Council', 'Orthodontics', '1982-03-10', '353 1 2345678'),
+    ('Johnson', 'Mark', 'Irish Dental Council', 'General Dentistry', '1978-08-22', '353 1 8765432'),
+    ('Williams', 'Olivia', 'Royal College of Surgeons in Ireland', 'Periodontics', '1990-07-14', '353 1 1122334');
