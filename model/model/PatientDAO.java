@@ -1,4 +1,4 @@
-package model;
+package model.model;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -126,16 +126,33 @@ public class PatientDAO {
     }
 
     public void deletePatient(int patientID) {
-        String query = "DELETE FROM patients WHERE PatientID = ?";
+        
+        String deleteQuery = "DELETE FROM patient WHERE PatientID = ?";
+        String maxIDQuery = "SELECT MAX(PatientID) FROM patient";
+        String resetAutoIncrementQuery = "ALTER TABLE patient AUTO_INCREMENT = ?";
+        
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setInt(1, patientID);
-
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Patient deleted successfully!");
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
+             Statement maxIDStatement = connection.createStatement()) {
+    
+           
+            deleteStatement.setInt(1, patientID);
+            deleteStatement.executeUpdate();
+    
+            
+            ResultSet maxIDResult = maxIDStatement.executeQuery(maxIDQuery);
+            if (maxIDResult.next()) {
+                int maxID = maxIDResult.getInt(1);
+    
+                
+                if (maxID < patientID) {
+                    int newAutoIncrementValue = patientID;
+                    PreparedStatement resetAutoIncrementStatement = connection.prepareStatement(resetAutoIncrementQuery);
+                    resetAutoIncrementStatement.setInt(1, newAutoIncrementValue);
+                    resetAutoIncrementStatement.executeUpdate();
+                }
             }
+    
         } catch (SQLException e) {
             e.printStackTrace();
         }

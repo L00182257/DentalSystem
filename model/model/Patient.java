@@ -1,4 +1,4 @@
-package model;
+package model.model;
 
 
 public class Patient{
@@ -71,7 +71,7 @@ public class Patient{
     }
 
     public String getLastName() {
-        return firstName;
+        return lastName;
     }
 
     public String getDOB() {
