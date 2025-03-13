@@ -72,13 +72,16 @@ public class StartScreen extends Application {
         return button;
     }
 
-    // Placeholder methods (to be implemented later)
-    private void openReceptionistScreen() {
-        System.out.println("Opening Receptionist Screen...");
+   
+   private void openReceptionistScreen(Stage primaryStage) {
+        ReceptionistScreen receptionistScreen = new ReceptionistScreen();
+        receptionistScreen.start(primaryStage); // Switch to the Receptionist Screen
     }
 
-    private void openDentistScreen() {
-        System.out.println("Opening Dentist Screen...");
+    // Open Dentist Screen
+    private void openDentistScreen(Stage primaryStage) {
+        DentistScreen dentistScreen = new DentistScreen();
+        dentistScreen.start(primaryStage); // Switch to the Dentist Screen
     }
 
     public static void main(String[] args) {
