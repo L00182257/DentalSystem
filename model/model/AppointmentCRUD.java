@@ -1,7 +1,9 @@
-package model;
+package model.model;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+// import javafx.util.Callback;
 
 public class AppointmentCRUD {
 
@@ -174,4 +176,56 @@ public class AppointmentCRUD {
             e.printStackTrace();
         }
     }
+
+    // public Callback getPatients() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getPatients'");
+    // }
+
+    // public Callback getDentists() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getDentists'");
+    // }
+    // Enhanced combo box methods using existing CRUD classes
+    public List<String> getPatients() {
+      PatientDAO patientDAO = new PatientDAO();
+      List<Patient> patients = patientDAO.getAllPatients();
+      List<String> patientStrings = new ArrayList<>();
+      
+      for(Patient p : patients) {
+          patientStrings.add(p.getPatientID() + ": " + 
+                           p.getFirstName() + " " + 
+                           p.getLastName());
+      }
+      return patientStrings;
+  }
+
+  public List<String> getDentists() {
+      DentistDAO dentistDAO = new DentistDAO();
+      List<Dentist> dentists = dentistDAO.getAllDentists();
+      List<String> dentistStrings = new ArrayList<>();
+      
+      for(Dentist d : dentists) {
+          dentistStrings.add(d.getDentistID() + ": " + 
+                           d.getFirstName() + " " + 
+                           d.getLastName());
+      }
+      return dentistStrings;
+  }
+
+  public List<String> getTreatments() {
+      TreatmentCRUD treatmentDAO = new TreatmentCRUD();
+      List<TreatmentCRUD.Treatment> treatments = treatmentDAO.getAllTreatments();
+      List<String> treatmentStrings = new ArrayList<>();
+      
+      for(TreatmentCRUD.Treatment t : treatments) {
+          treatmentStrings.add(t.getTreatmentID() + ": " + 
+                              t.getTreatmentType() + " (" + 
+                              t.getLength() + " mins)");
+      }
+      return treatmentStrings;
+  }
+
+  
+    
 }
