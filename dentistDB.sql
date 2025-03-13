@@ -56,9 +56,9 @@ VALUES
 -- Inserting Dentists
 INSERT INTO Dentist (LastName, FirstName, AwardingBody, Specialty, DateOfBirth, PhoneNo)
 VALUES
-    ('Taylor', 'Sarah', 'Irish Dental Council', 'Orthodontics', '1982-03-10', '353 1 2345678'),
-    ('Johnson', 'Mark', 'Irish Dental Council', 'General Dentistry', '1978-08-22', '353 1 8765432'),
-    ('Williams', 'Olivia', 'Royal College of Surgeons in Ireland', 'Periodontics', '1990-07-14', '353 1 1122334'),
+    ('Taylor', 'Sarah', 'Irish Dental Council', 'Orthodontics', '1982-03-10', '35312345678'),
+    ('Johnson', 'Mark', 'Irish Dental Council', 'General Dentistry', '1978-08-22', '35318765432'),
+    ('Williams', 'Olivia', 'Royal College of Surgeons in Ireland', 'Periodontics', '1990-07-14', '35311122334'),
     ('Kako', 'Ibrahim', 'GoatSelecters', 'CodeMaster', '2090-11-11', '087 1 2345543');
 
 
