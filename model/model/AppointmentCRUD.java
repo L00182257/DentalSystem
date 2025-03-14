@@ -1,7 +1,15 @@
 package model.model;
 import java.sql.*;
+import java.time.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // import javafx.util.Callback;
 
@@ -11,7 +19,7 @@ public class AppointmentCRUD {
     private static Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/dentistdb"; // Change database name
         String username = "root"; // username
-        String password = "password"; // password
+        String password = "TKJjoq2d."; // password
         return DriverManager.getConnection(url, username, password);
     }
 
@@ -89,26 +97,65 @@ public class AppointmentCRUD {
 
     // CREATE - Add a new appointment
     public void addAppointment(Appointment appointment) {
-      String query = "INSERT INTO appointment (DateOfAppointment, TimeOfAppointment, Attended, TreatmentID, PatientID, DentistID) VALUES (?, ?, ?, ?, ?, ?)";
-  
-      try (Connection connection = getConnection();
-           PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-  
-          statement.setDate(1, appointment.getDateOfAppointment());
-          statement.setTime(2, appointment.getTimeOfAppointment());
-          statement.setBoolean(3, appointment.isAttended());
-          statement.setInt(4, appointment.getTreatmentID());
-          statement.setInt(5, appointment.getPatientID());  // Corrected the column name
-          statement.setInt(6, appointment.getDentistID());
-  
-          int rowsAffected = statement.executeUpdate();
-          if (rowsAffected > 0) {
-              System.out.println("Appointment added successfully!");
-          }
-      } catch (SQLException e) {
-          e.printStackTrace();
-      }
-  }
+        LocalDateTime now = LocalDateTime.now(); // Get current date & time
+        LocalDateTime appointmentDateTime = LocalDateTime.of(
+            appointment.getDateOfAppointment().toLocalDate(),  // Convert SQL Date to LocalDate
+            appointment.getTimeOfAppointment().toLocalTime()   // Convert SQL Time to LocalTime
+        );
+
+        if (appointmentDateTime.isBefore(now)) {
+            System.out.println("Error: Cannot book an appointment in the past.");
+            return; // Stop execution if the date/time is in the past
+        }
+
+        // Check if the dentist is already booked at this date & time
+        if (isDentistBooked(appointment.getDentistID(), appointment.getDateOfAppointment(), appointment.getTimeOfAppointment())) {
+            System.out.println("Error: This dentist is already booked for this time.");
+            return;
+        }
+
+        String query = "INSERT INTO appointment (DateOfAppointment, TimeOfAppointment, Attended, TreatmentID, PatientID, DentistID) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setDate(1, appointment.getDateOfAppointment());
+            statement.setTime(2, appointment.getTimeOfAppointment());
+            statement.setBoolean(3, appointment.isAttended());
+            statement.setInt(4, appointment.getTreatmentID());
+            statement.setInt(5, appointment.getPatientID());
+            statement.setInt(6, appointment.getDentistID());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Appointment added successfully!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private boolean isDentistBooked(int dentistID, Date date, Time time) {
+        String query = "SELECT COUNT(*) FROM appointment WHERE DentistID = ? AND DateOfAppointment = ? AND TimeOfAppointment = ?";
+        
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+    
+            statement.setInt(1, dentistID);
+            statement.setDate(2, date);
+            statement.setTime(3, time);
+    
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next() && resultSet.getInt(1) > 0) {
+                    return true; // Dentist is already booked
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Dentist is available
+    }
+    
 
     // READ - Get all appointments
     public List<Appointment> getAllAppointments() {
@@ -203,6 +250,7 @@ public class AppointmentCRUD {
   public List<String> getDentists() {
       DentistDAO dentistDAO = new DentistDAO();
       List<Dentist> dentists = dentistDAO.getAllDentists();
+      System.out.println("Number of dentists fetched: " + dentists.size());  // Debugging line
       List<String> dentistStrings = new ArrayList<>();
       
       for(Dentist d : dentists) {
@@ -226,6 +274,91 @@ public class AppointmentCRUD {
       return treatmentStrings;
   }
 
-  
-    
+  public Map<Integer, LocalDateTime> getNextAvailableAppointments() {
+    Map<Integer, LocalDateTime> nextAvailableAppointments = new HashMap<>();
+
+    String dentistQuery = "SELECT DentistID FROM Dentist";
+    String appointmentQuery = "SELECT DateOfAppointment, TimeOfAppointment FROM appointment " +
+                              "WHERE DentistID = ? AND DateOfAppointment >= CURDATE() " +
+                              "ORDER BY DateOfAppointment ASC, TimeOfAppointment ASC";
+
+    try (Connection connection = getConnection();
+         PreparedStatement dentistStmt = connection.prepareStatement(dentistQuery);
+         ResultSet dentistResult = dentistStmt.executeQuery()) {
+
+        while (dentistResult.next()) {
+            int dentistID = dentistResult.getInt("DentistID");
+            LocalDateTime availableTime = findNextAvailableTime(connection, dentistID, appointmentQuery);
+            nextAvailableAppointments.put(dentistID, availableTime);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return nextAvailableAppointments;
+}
+ 
+private LocalDateTime findNextAvailableTime(Connection connection, int dentistID, String query) throws SQLException {
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setInt(1, dentistID);
+        ResultSet rs = stmt.executeQuery();
+
+        LocalDateTime now = LocalDateTime.now(); // Current time
+        LocalDate today = now.toLocalDate();
+        LocalTime currentTime = now.toLocalTime();
+
+        LocalTime workStart = LocalTime.of(9, 0);  // Dentist starts at 09:00 AM
+        LocalTime workEnd = LocalTime.of(17, 0);   // Dentist ends at 5:00 PM
+        Duration slotDuration = Duration.ofMinutes(30); // Each appointment lasts 30 minutes
+
+        // 🔹 Determine the first possible time for today
+        LocalTime firstPossibleTime;
+        if (currentTime.isBefore(workStart)) {
+            firstPossibleTime = workStart;
+        } else if (currentTime.isAfter(workEnd)) {
+            today = today.plusDays(1); // Move to next day
+            firstPossibleTime = workStart;
+        } else {
+            // Round current time to next available 30-minute slot
+            int minutes = currentTime.getMinute();
+            int roundedMinutes = (minutes / 30) * 30 + 30;
+            if (roundedMinutes >= 60) {
+                firstPossibleTime = LocalTime.of(currentTime.getHour() + 1, 0);
+            } else {
+                firstPossibleTime = LocalTime.of(currentTime.getHour(), roundedMinutes);
+            }
+            // Ensure it's within working hours
+            if (firstPossibleTime.isAfter(workEnd)) {
+                today = today.plusDays(1);
+                firstPossibleTime = workStart;
+            }
+        }
+
+        LocalDateTime nextAvailableTime = LocalDateTime.of(today, firstPossibleTime);
+
+        // 🔍 Check against existing appointments
+        while (rs.next()) {
+            LocalDate appointmentDate = rs.getDate("DateOfAppointment").toLocalDate();
+            LocalTime appointmentTime = rs.getTime("TimeOfAppointment").toLocalTime();
+            LocalDateTime appointmentDateTime = LocalDateTime.of(appointmentDate, appointmentTime);
+
+            // If the suggested time conflicts, move to the next slot
+            if (!nextAvailableTime.isBefore(appointmentDateTime) && nextAvailableTime.equals(appointmentDateTime)) {
+                nextAvailableTime = nextAvailableTime.plus(slotDuration);
+
+                // If next slot goes past work hours, move to the next day
+                if (nextAvailableTime.toLocalTime().isAfter(workEnd)) {
+                    today = today.plusDays(1);
+                    nextAvailableTime = LocalDateTime.of(today, workStart);
+                }
+            }
+        }
+
+        return nextAvailableTime;
+    }
+}
+
+
+
+
 }
