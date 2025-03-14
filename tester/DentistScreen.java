@@ -1,11 +1,3 @@
-package tester;
-
-import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -26,7 +18,7 @@ public class DentistScreen extends Application {
         scheduleButton.setOnAction(e -> openScheduleScreen());
 
         
-        VBox layout = new VBox(20, title,  scheduleButton);
+        VBox layout = new VBox(20, title,  scheduleButton, backToStartScreen);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 50;");
 
@@ -73,6 +65,15 @@ public class DentistScreen extends Application {
 
     private void openScheduleScreen() {
         System.out.println("Opening Schedule Screen...");
+    }
+
+    private void backToStartScreen(Stage primaryStage) {
+        StartScreen startScreen = new StartScreen();
+        try {
+            startScreen.start(primaryStage); // Reuse the same Stage
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public static void main(String[] args) {
         launch(args);

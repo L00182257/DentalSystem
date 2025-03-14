@@ -37,8 +37,10 @@ public class ReceptionistScreen extends Application {
         Button dentistListButton = createStyledButton("Dentist List");
         dentistListButton.setOnAction(e -> openDentistListScreen());
 
+        Button backToStartScreen = createStyledButton("Back");
+        dentistListButton.setOnAction(e -> openDentistListScreen());
         
-        VBox layout = new VBox(20, title, appointmentButton, scheduleButton, treatmentListButton, patientListButton, dentistListButton);
+        VBox layout = new VBox(20, title, appointmentButton, scheduleButton, treatmentListButton, patientListButton, dentistListButton, backToStartScreen);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 50;");
 
@@ -106,6 +108,15 @@ public class ReceptionistScreen extends Application {
 
     private void openDentistListScreen() {
         System.out.println("Opening Dentist List Screen...");
+    }
+
+    private void backToStartScreen(Stage primaryStage) {
+        StartScreen startScreen = new StartScreen();
+        try {
+            startScreen.start(primaryStage); // Reuse the same Stage
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
