@@ -14,10 +14,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.geometry.*;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class AppointmentGUI extends Application {
     private TableView<Appointment> table;
@@ -34,28 +37,42 @@ public class AppointmentGUI extends Application {
         setupMainLayout(primaryStage);
     }
 
+    @SuppressWarnings("unchecked")
     private void setupTable() {
         table = new TableView<>();
+        
         TableColumn<Appointment, Integer> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
 
-        TableColumn<Appointment, Date> dateColumn = new TableColumn<>("Date");
+        TableColumn<Appointment, Integer> patientColumn = new TableColumn<>("Patient");
+        patientColumn.setCellValueFactory(new PropertyValueFactory<>("patientID"));
+
+        TableColumn<Appointment, Integer> dentistColumn = new TableColumn<>("Dentist");
+        dentistColumn.setCellValueFactory(new PropertyValueFactory<>("dentistID"));
+
+        TableColumn<Appointment, Integer> treatmentColumn = new TableColumn<>("Treatment");
+        treatmentColumn.setCellValueFactory(new PropertyValueFactory<>("treatmentID"));
+        
+        TableColumn<Appointment, LocalDate> dateColumn = new TableColumn<>("Date");
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateOfAppointment"));
 
-        TableColumn<Appointment, Time> timeColumn = new TableColumn<>("Time");
+        TableColumn<Appointment, LocalTime> timeColumn = new TableColumn<>("Time");
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("timeOfAppointment"));
 
         TableColumn<Appointment, Boolean> attendedColumn = new TableColumn<>("Attended");
         attendedColumn.setCellValueFactory(new PropertyValueFactory<>("attended"));
 
-        table.getColumns().addAll(idColumn, dateColumn, timeColumn, attendedColumn);
+        table.getColumns().addAll(idColumn, patientColumn, dentistColumn, treatmentColumn, dateColumn, timeColumn, attendedColumn);
         refreshTable();
     }
-
+    
     private void setupMainLayout(Stage primaryStage) {
         HBox buttonBox = new HBox(15);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setPadding(new Insets(15));
+
+        Button nextAvailableButton = createStyledButton("Next Available Appointment");
+        nextAvailableButton.setOnAction(e -> showNextAvailableAppointments());
 
         Button addButton = createStyledButton("Add Appointment");
         addButton.setOnAction(e -> showAppointmentForm(null));
@@ -69,7 +86,7 @@ public class AppointmentGUI extends Application {
         Button refreshButton = createStyledButton("Refresh");
         refreshButton.setOnAction(e -> refreshTable());
 
-        buttonBox.getChildren().addAll(addButton, updateButton, deleteButton, refreshButton);
+        buttonBox.getChildren().addAll(addButton, updateButton, deleteButton, refreshButton, nextAvailableButton);
 
         VBox layout = new VBox(15, table, buttonBox);
         layout.setAlignment(Pos.CENTER);
@@ -79,6 +96,22 @@ public class AppointmentGUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    private void showNextAvailableAppointments() {
+        Map<Integer, LocalDateTime> nextAppointments = appointmentDAO.getNextAvailableAppointments();
+        StringBuilder message = new StringBuilder();
+
+        for (Map.Entry<Integer, LocalDateTime> entry : nextAppointments.entrySet()) {
+            message.append("Dentist ID: ").append(entry.getKey())
+                .append(", Next Available: ")
+                .append(entry.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .append("\n");
+        }
+
+    showAlert("Next Available Appointments", message.toString(), Alert.AlertType.INFORMATION);
+}
+
+
 
     private void handleUpdate() {
         Appointment selected = table.getSelectionModel().getSelectedItem();
@@ -165,7 +198,6 @@ public class AppointmentGUI extends Application {
         if (!validateInputs(patient, dentist, treatment, date, time)) {
             return;
         }
-
         try {
             int patientId = parseId(patient);
             int dentistId = parseId(dentist);
@@ -235,10 +267,13 @@ public class AppointmentGUI extends Application {
 
 private List<String> getAvailableTimeSlots() {
     return new ArrayList<>(Arrays.asList(
-        "09:00", "09:15", "09:30", "09:45", "10:00",
-        "10:15", "10:30", "10:45", "11:00", "11:15",
-        "11:30", "13:00", "13:15", "13:30", "13:45",
-        "14:00", "14:15", "14:30", "14:45", "15:00"
+        "09:00",  "09:30",  "10:00",
+         "10:30",  "11:00", 
+        "11:30", "13:00",  "13:30", 
+        "14:00", "14:30",  "15:00", 
+        "15:30",  "16:00",  "16:30",
+            "17:00",  "17:30",  "18:00"
+            
     ));
 }
 
