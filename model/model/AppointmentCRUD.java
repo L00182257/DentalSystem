@@ -19,7 +19,7 @@ public class AppointmentCRUD {
     private static Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/dentistdb"; // Change database name
         String username = "root"; // username
-        String password = "TKJjoq2d."; // password
+        String password = "password"; // password
         return DriverManager.getConnection(url, username, password);
     }
 
