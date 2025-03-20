@@ -12,15 +12,20 @@ import javafx.stage.Stage;
 
 public class ReceptionistScreen extends Application {
 
+    private VBox layout;
+    private Scene mainScene;
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Receptionist Dashboard");
 
         // Title
         Text title = new Text("Receptionist Dashboard");
         title.setFont(Font.font("Arial", 28));
         title.setFill(Color.WHITE);
-        title.setStyle("-fx-font-weight: bold; ");
+        title.setStyle("-fx-font-weight: bold;");
 
         Button appointmentButton = createStyledButton("Appointment");
         appointmentButton.setOnAction(e -> openAppointmentScreen());
@@ -38,21 +43,20 @@ public class ReceptionistScreen extends Application {
         dentistListButton.setOnAction(e -> openDentistListScreen());
 
         Button backToStartScreen = createStyledButton("Back");
-        dentistListButton.setOnAction(e -> openDentistListScreen());
-        
-        VBox layout = new VBox(20, title, appointmentButton, scheduleButton, treatmentListButton, patientListButton, dentistListButton, backToStartScreen);
+        backToStartScreen.setOnAction(e -> backToStartScreen());
+
+        layout = new VBox(20, title, appointmentButton, scheduleButton, treatmentListButton, patientListButton, dentistListButton, backToStartScreen);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 50;");
 
-       
         appointmentButton.setMaxWidth(Double.MAX_VALUE);
         scheduleButton.setMaxWidth(Double.MAX_VALUE);
         treatmentListButton.setMaxWidth(Double.MAX_VALUE);
         patientListButton.setMaxWidth(Double.MAX_VALUE);
         dentistListButton.setMaxWidth(Double.MAX_VALUE);
 
-        Scene scene = new Scene(layout, 450, 450); 
-        primaryStage.setScene(scene);
+        mainScene = new Scene(layout, 450, 450);
+        primaryStage.setScene(mainScene);
         primaryStage.show();
     }
 
@@ -60,7 +64,7 @@ public class ReceptionistScreen extends Application {
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setStyle(
-            "-fx-background-color: #3498DB; " + 
+            "-fx-background-color: #3498DB; " +
             "-fx-text-fill: white; " +
             "-fx-font-size: 16px; " +
             "-fx-font-weight: bold; " +
@@ -69,7 +73,7 @@ public class ReceptionistScreen extends Application {
             "-fx-cursor: hand;"
         );
         button.setOnMouseEntered(e -> button.setStyle(
-            "-fx-background-color: #2980B9; " + 
+            "-fx-background-color: #2980B9; " +
             "-fx-text-fill: white; " +
             "-fx-font-size: 16px; " +
             "-fx-font-weight: bold; " +
@@ -78,7 +82,7 @@ public class ReceptionistScreen extends Application {
             "-fx-cursor: hand;"
         ));
         button.setOnMouseExited(e -> button.setStyle(
-            "-fx-background-color: #3498DB; " + 
+            "-fx-background-color: #3498DB; " +
             "-fx-text-fill: white; " +
             "-fx-font-size: 16px; " +
             "-fx-font-weight: bold; " +
@@ -89,9 +93,10 @@ public class ReceptionistScreen extends Application {
         return button;
     }
 
-
     private void openAppointmentScreen() {
-        System.out.println("Opening Appointment Screen...");
+        AppointmentGUI appointmentGUI = new AppointmentGUI();
+        layout.getChildren().clear();
+        appointmentGUI.start(primaryStage);
     }
 
     private void openScheduleScreen() {
@@ -99,21 +104,27 @@ public class ReceptionistScreen extends Application {
     }
 
     private void openTreatmentListScreen() {
-        System.out.println("Opening Treatment List Screen...");
+        TreatmentGUI treatmentGUI = new TreatmentGUI();
+        layout.getChildren().clear();
+        treatmentGUI.start(primaryStage);
     }
 
     private void openPatientListScreen() {
-        System.out.println("Opening Patient List Screen...");
+        PatientGUI patientGUI = new PatientGUI();
+        layout.getChildren().clear();
+        patientGUI.start(primaryStage);
     }
 
     private void openDentistListScreen() {
-        System.out.println("Opening Dentist List Screen...");
+        DentistManagementGUI dentistGUI = new DentistManagementGUI();
+        layout.getChildren().clear();
+        dentistGUI.start(primaryStage);
     }
 
-    private void backToStartScreen(Stage primaryStage) {
+    private void backToStartScreen() {
         StartScreen startScreen = new StartScreen();
         try {
-            startScreen.start(primaryStage); // Reuse the same Stage
+            startScreen.start(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }

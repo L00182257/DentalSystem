@@ -1,3 +1,11 @@
+package tester;
+
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -16,6 +24,9 @@ public class DentistScreen extends Application {
 
         Button scheduleButton = createStyledButton("Schedule");
         scheduleButton.setOnAction(e -> openScheduleScreen());
+
+        Button backToStartScreen = createStyledButton("Back");
+        backToStartScreen.setOnAction(e -> backToStartScreen(primaryStage));
 
         
         VBox layout = new VBox(20, title,  scheduleButton, backToStartScreen);

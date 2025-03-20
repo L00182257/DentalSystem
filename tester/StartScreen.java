@@ -24,10 +24,10 @@ public class StartScreen extends Application {
 
         // Buttons
         Button receptionistButton = createStyledButton("Receptionist");
-        receptionistButton.setOnAction(e -> openReceptionistScreen());
+        receptionistButton.setOnAction(e -> openReceptionistScreen(primaryStage));
 
         Button dentistButton = createStyledButton("Dentist");
-        dentistButton.setOnAction(e -> openDentistScreen());
+        dentistButton.setOnAction(e -> openDentistScreen(primaryStage));
 
         // Layout
         VBox layout = new VBox(20, title, receptionistButton, dentistButton);
@@ -88,3 +88,4 @@ public class StartScreen extends Application {
         launch(args);
     }
 }
+
