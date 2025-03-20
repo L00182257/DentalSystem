@@ -7,8 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.Dentist;
-import model.DentistDAO;
+import model.model.Dentist;
+import model.model.DentistDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,6 +17,7 @@ public class DentistManagementGUI extends Application {
     private TableView<Dentist> table;
     private TextField searchField;
     private DentistDAO dentistDAO = new DentistDAO();
+    private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -24,6 +25,7 @@ public class DentistManagementGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Dentist Management System");
 
         // Table setup
@@ -51,8 +53,11 @@ public class DentistManagementGUI extends Application {
         
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(e -> deleteDentist());
+
+        Button backToReceptionistScreen = new Button("Back");
+        backToReceptionistScreen.setOnAction(e -> backToReceptionistScreen());
         
-        HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton);
+        HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton, backToReceptionistScreen);
         buttonBox.setAlignment(Pos.CENTER);
 
         // Layout
@@ -163,5 +168,10 @@ public class DentistManagementGUI extends Application {
             table.getSelectionModel().select(d);
             table.scrollTo(d);
         });
+    }
+
+    private void backToReceptionistScreen() {
+        ReceptionistScreen receptionistScreen = new ReceptionistScreen();
+        receptionistScreen.start(primaryStage);
     }
 }

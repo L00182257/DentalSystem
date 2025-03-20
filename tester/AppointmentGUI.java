@@ -25,6 +25,7 @@ import java.util.Map;
 public class AppointmentGUI extends Application {
     private TableView<Appointment> table;
     private AppointmentCRUD appointmentDAO = new AppointmentCRUD();
+    private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -32,6 +33,7 @@ public class AppointmentGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Appointment Management System");
         setupTable();
         setupMainLayout(primaryStage);
@@ -86,7 +88,10 @@ public class AppointmentGUI extends Application {
         Button refreshButton = createStyledButton("Refresh");
         refreshButton.setOnAction(e -> refreshTable());
 
-        buttonBox.getChildren().addAll(addButton, updateButton, deleteButton, refreshButton, nextAvailableButton);
+        Button backToReceptionistScreen = createStyledButton("Back");
+        backToReceptionistScreen.setOnAction(e -> backToReceptionistScreen());
+
+        buttonBox.getChildren().addAll(addButton, updateButton, deleteButton, refreshButton, nextAvailableButton, backToReceptionistScreen);
 
         VBox layout = new VBox(15, table, buttonBox);
         layout.setAlignment(Pos.CENTER);
@@ -275,6 +280,11 @@ private List<String> getAvailableTimeSlots() {
             "17:00",  "17:30",  "18:00"
             
     ));
+}
+
+private void backToReceptionistScreen() {
+    ReceptionistScreen receptionistScreen = new ReceptionistScreen();
+    receptionistScreen.start(primaryStage);
 }
 
 

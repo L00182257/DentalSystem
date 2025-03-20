@@ -7,8 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.TreatmentCRUD;
-import model.TreatmentCRUD.Treatment;
+import model.model.TreatmentCRUD;
+import model.model.TreatmentCRUD.Treatment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +19,7 @@ public class TreatmentGUI extends Application {
     private TableView<Treatment> table;
     private TextField searchField;
     private TreatmentCRUD treatmentCRUD = new TreatmentCRUD();
+    private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -26,6 +27,7 @@ public class TreatmentGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Treatment Management System");
 
         // Table setup
@@ -54,7 +56,10 @@ public class TreatmentGUI extends Application {
         Button deleteButton = new Button("Delete Treatment");
         deleteButton.setOnAction(e -> deleteTreatment());
 
-        HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton);
+        Button backToReceptionistScreen = new Button("Back");
+        backToReceptionistScreen.setOnAction(e -> backToReceptionistScreen());
+
+        HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton, backToReceptionistScreen);
         buttonBox.setAlignment(Pos.CENTER);
 
         // Layout
@@ -201,5 +206,10 @@ public class TreatmentGUI extends Application {
         alert.setTitle("Information");
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void backToReceptionistScreen() {
+        ReceptionistScreen receptionistScreen = new ReceptionistScreen();
+        receptionistScreen.start(primaryStage);
     }
 }

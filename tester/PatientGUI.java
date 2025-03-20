@@ -17,6 +17,7 @@ public class PatientGUI extends Application {
     private TableView<Patient> table;
     private TextField searchField;
     private PatientDAO patientDAO = new PatientDAO();
+    private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -24,6 +25,7 @@ public class PatientGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Patient Management System");
 
         // Table setup
@@ -52,7 +54,10 @@ public class PatientGUI extends Application {
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(e -> deletePatient());
 
-        HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton);
+        Button backToReceptionistScreen = new Button("Back");
+        backToReceptionistScreen.setOnAction(e -> backToReceptionistScreen());
+
+        HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton, backToReceptionistScreen);
         buttonBox.setAlignment(Pos.CENTER);
 
         // Layout
@@ -124,7 +129,7 @@ public class PatientGUI extends Application {
                 patientDAO.addPatient(newPatient);
             } else {
                 patient.setFirstName(firstNameField.getText());
-                patient.setLastName(lastNameField.getText());
+                patient.setLastName(firstNameField.getText());
                 patient.setDOB(dobField.getText());
                 patient.setEmail(emailField.getText());
                 patientDAO.updatePatient(patient);
@@ -159,5 +164,14 @@ public class PatientGUI extends Application {
             table.getSelectionModel().select(p);
             table.scrollTo(p);
         });
+    }
+
+    private void backToReceptionistScreen() {
+        ReceptionistScreen receptionistScreen = new ReceptionistScreen();
+        try {
+            receptionistScreen.start(primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
