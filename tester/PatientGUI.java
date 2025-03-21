@@ -7,8 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.Patient;
-import model.PatientDAO;
+import model.model.Patient;
+import model.model.PatientDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,7 +17,6 @@ public class PatientGUI extends Application {
     private TableView<Patient> table;
     private TextField searchField;
     private PatientDAO patientDAO = new PatientDAO();
-    private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -25,7 +24,6 @@ public class PatientGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
         primaryStage.setTitle("Patient Management System");
 
         // Table setup
@@ -54,10 +52,7 @@ public class PatientGUI extends Application {
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(e -> deletePatient());
 
-        Button backToReceptionistScreen = new Button("Back");
-        backToReceptionistScreen.setOnAction(e -> backToReceptionistScreen());
-
-        HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton, backToReceptionistScreen);
+        HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton);
         buttonBox.setAlignment(Pos.CENTER);
 
         // Layout
@@ -86,8 +81,23 @@ public class PatientGUI extends Application {
         
         TableColumn<Patient, String> emailColumn = new TableColumn<>("Email");
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        // Street, Town, County, Eircode, MedicalCard
+        TableColumn<Patient, String> streetColumn = new TableColumn<>("Street");
+        streetColumn.setCellValueFactory(new PropertyValueFactory<>("street"));
+
+        TableColumn<Patient, String> townColumn = new TableColumn<>("Town");
+        townColumn.setCellValueFactory(new PropertyValueFactory<>("town"));
+
+        TableColumn<Patient, String> countyColumn = new TableColumn<>("County");
+        countyColumn.setCellValueFactory(new PropertyValueFactory<>("county"));
+
+        TableColumn<Patient, String> eircodeColumn = new TableColumn<>("Eircode");
+        eircodeColumn.setCellValueFactory(new PropertyValueFactory<>("eircode"));
         
-        table.getColumns().addAll(idColumn, firstNameColumn, lastNameColumn, dobColumn, emailColumn);
+        TableColumn<Patient, Boolean> medCardColumn = new TableColumn<>("Medical Card");
+        medCardColumn.setCellValueFactory(new PropertyValueFactory<>("medCard"));
+
+        table.getColumns().addAll(idColumn, firstNameColumn, lastNameColumn, dobColumn, emailColumn, streetColumn, townColumn, countyColumn, eircodeColumn, medCardColumn);
     }
 
     private void loadPatients() {
@@ -109,9 +119,18 @@ public class PatientGUI extends Application {
         TextField lastNameField = new TextField();
         lastNameField.setPromptText("Last Name");
         TextField dobField = new TextField();
-        dobField.setPromptText("Date of Birth (YYYY-MM-DD)");
+        dobField.setPromptText("YYYY-MM-DD");
         TextField emailField = new TextField();
         emailField.setPromptText("Email");
+        TextField streetField = new TextField();
+        streetField.setPromptText("Address");
+        TextField townField = new TextField();
+        townField.setPromptText("Town");
+        TextField countyField = new TextField();
+        countyField.setPromptText("County");
+        TextField eircodeField = new TextField();
+        eircodeField.setPromptText("Eircode");
+        
         CheckBox medCardCheckBox = new CheckBox("Medical Card");
 
         if (patient != null) {
@@ -119,19 +138,29 @@ public class PatientGUI extends Application {
             lastNameField.setText(patient.getLastName());
             dobField.setText(patient.getDOB());
             emailField.setText(patient.getEmail());
+            streetField.setText(patient.getStreet());
+            townField.setText(patient.getTown());
+            countyField.setText(patient.getCounty());
+            eircodeField.setText(patient.getEircode());
             medCardCheckBox.setSelected(patient.getMedCard());
+
         }
 
         Button saveButton = new Button("Save");
         saveButton.setOnAction(e -> {
             if (patient == null) {
-                Patient newPatient = new Patient(0, firstNameField.getText(), lastNameField.getText(), dobField.getText(), emailField.getText(), null, null, null, null, medCardCheckBox.isSelected());
+                Patient newPatient = new Patient(0, firstNameField.getText(), lastNameField.getText(), dobField.getText(), emailField.getText(), streetField.getText(), townField.getText(), countyField.getText(), eircodeField.getText(), medCardCheckBox.isSelected());
                 patientDAO.addPatient(newPatient);
             } else {
                 patient.setFirstName(firstNameField.getText());
-                patient.setLastName(firstNameField.getText());
+                patient.setLastName(lastNameField.getText());
                 patient.setDOB(dobField.getText());
                 patient.setEmail(emailField.getText());
+                patient.setStreet(streetField.getText());
+                patient.setTown(townField.getText());
+                patient.setCounty(countyField.getText());
+                patient.setEircode(eircodeField.getText());
+                patient.setMedCard(medCardCheckBox.isSelected());
                 patientDAO.updatePatient(patient);
             }
             loadPatients();
@@ -142,10 +171,14 @@ public class PatientGUI extends Application {
         grid.add(new Label("Last Name:"), 0, 1); grid.add(lastNameField, 1, 1);
         grid.add(new Label("Date of Birth:"), 0, 2); grid.add(dobField, 1, 2);
         grid.add(new Label("Email:"), 0, 3); grid.add(emailField, 1, 3);
-        grid.add(medCardCheckBox, 1, 4);
-        grid.add(saveButton, 1, 5);
+        grid.add(new Label("Address:"), 0, 4); grid.add(streetField, 1, 4);
+        grid.add(new Label("Town:"), 0, 5); grid.add(townField, 1, 5);
+        grid.add(new Label("County:"), 0, 6); grid.add(countyField, 1, 6);
+        grid.add(new Label("Eircode:"), 0, 7); grid.add(eircodeField, 1,7);
+        grid.add(medCardCheckBox, 1, 8);
+        grid.add(saveButton, 0, 9);
 
-        Scene formScene = new Scene(grid, 400, 300);
+        Scene formScene = new Scene(grid, 380, 400);
         formStage.setScene(formScene);
         formStage.show();
     }
@@ -164,14 +197,5 @@ public class PatientGUI extends Application {
             table.getSelectionModel().select(p);
             table.scrollTo(p);
         });
-    }
-
-    private void backToReceptionistScreen() {
-        ReceptionistScreen receptionistScreen = new ReceptionistScreen();
-        try {
-            receptionistScreen.start(primaryStage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
