@@ -357,7 +357,34 @@ private LocalDateTime findNextAvailableTime(Connection connection, int dentistID
         return nextAvailableTime;
     }
 }
+public List<Appointment> getAppointmentsByDate(LocalDate date) {
+    List<Appointment> appointments = new ArrayList<>();
+    String query = "SELECT * FROM appointment WHERE DateOfAppointment = ?";
 
+    try (Connection connection = getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setDate(1, Date.valueOf(date));
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Appointment appointment = new Appointment(
+                        resultSet.getDate("DateOfAppointment"),
+                        resultSet.getTime("TimeOfAppointment"),
+                        resultSet.getBoolean("Attended"),
+                        resultSet.getInt("TreatmentID"),
+                        resultSet.getInt("PatientID"),
+                        resultSet.getInt("DentistID")
+                );
+                appointment.setAppointmentID(resultSet.getInt("AppointmentID"));
+                appointments.add(appointment);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return appointments;
+}
 
 
 
