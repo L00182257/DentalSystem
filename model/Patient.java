@@ -1,4 +1,4 @@
-package model.model;
+package model;
 
 
 public class Patient{
@@ -12,8 +12,9 @@ public class Patient{
     private String county;
     private String eircode;
     private Boolean medCard;
+    private Double amtOwed;
 
-    public Patient(int patientID,String firstName, String lastName, String dateOfBirth, String email, String street, String town, String county, String eircode, Boolean medCard) {
+    public Patient(int patientID,String firstName, String lastName, String dateOfBirth, String email, String street, String town, String county, String eircode, Boolean medCard, Double amtOwed) {
         this.patientID = patientID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -23,7 +24,8 @@ public class Patient{
         this.town = town;
         this.county = county;
         this.eircode = eircode;
-        this.medCard = medCard;    
+        this.medCard = medCard;
+        this.amtOwed = amtOwed; 
     }
     public void setPatientID(int patientID) {
         this.patientID = patientID;
@@ -61,8 +63,8 @@ public class Patient{
         this.eircode = eircode;
     }
 
-    public void setMedCard(Boolean medCard) {
-        this.medCard = medCard;
+    public void setAmtOwed(Double amtOwed) {
+        this.amtOwed = amtOwed;
     }
 
     public int getPatientID() {
@@ -106,6 +108,10 @@ public class Patient{
         return medCard;
     }
 
+    public Double getAmtOwed() {
+        return amtOwed;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
@@ -118,7 +124,8 @@ public class Patient{
            ", town='" + town + '\'' +
            ", county='" + county + '\'' +
            ", eircode='" + eircode + '\'' +
-           ", medCard=" + medCard +
+           ", medCard=" + medCard + '\'' +
+           ", medCard=" + amtOwed +
            '}';
 }
 

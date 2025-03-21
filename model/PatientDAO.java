@@ -1,4 +1,4 @@
-package model.model;
+package model;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class PatientDAO {
     }
 
     public void addPatient(Patient patient) {
-        String query = "INSERT INTO Patient (FirstName, LastName, DateOfBirth, Email, Street, Town, County, Eircode, MedicalCard) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Patient (FirstName, LastName, DateOfBirth, Email, Street, Town, County, Eircode, MedicalCard, AmtOwed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -27,6 +27,7 @@ public class PatientDAO {
             statement.setString(7, patient.getCounty());
             statement.setString(8, patient.getEircode());
             statement.setBoolean(9, patient.getMedCard());
+            statement.setDouble(10, patient.getAmtOwed());
 
             int rowsAffected = statement.executeUpdate();
 
@@ -61,7 +62,8 @@ public class PatientDAO {
                     resultSet.getString("Town"),
                     resultSet.getString("County"),
                     resultSet.getString("Eircode"),
-                    resultSet.getBoolean("MedicalCard")
+                    resultSet.getBoolean("MedicalCard"),
+                    resultSet.getDouble("Amount Owed")
                 );
                 patients.add(patient);
             }
@@ -91,7 +93,9 @@ public class PatientDAO {
                     resultSet.getString("Town"),
                     resultSet.getString("County"),
                     resultSet.getString("Eircode"),
-                    resultSet.getBoolean("MedicalCard")
+                    resultSet.getBoolean("MedicalCard"),
+                    resultSet.getDouble("Amount Owed")
+
                 );
             }
         } catch (SQLException e) {
@@ -101,7 +105,7 @@ public class PatientDAO {
     }
 
     public void updatePatient(Patient patient) {
-        String query = "UPDATE patient SET FirstName = ?, LastName = ?, DateOfBirth = ?, Email = ?, Street = ?, Town = ?, County = ?, Eircode = ?, MedicalCard = ? WHERE PatientID = ?";
+        String query = "UPDATE patients SET FirstName = ?, LastName = ?, DateOfBirth = ?, Email = ?, Street = ?, Town = ?, County = ?, Eircode = ?, MedicalCard = ? WHERE PatientID = ?";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -115,6 +119,7 @@ public class PatientDAO {
             statement.setString(8, patient.getEircode());
             statement.setBoolean(9, patient.getMedCard());
             statement.setInt(10, patient.getPatientID());
+            statement.setDouble(11, patient.getAmtOwed());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
@@ -126,16 +131,33 @@ public class PatientDAO {
     }
 
     public void deletePatient(int patientID) {
-        String query = "DELETE FROM patient WHERE PatientID = ?";
+        
+        String deleteQuery = "DELETE FROM patient WHERE PatientID = ?";
+        String maxIDQuery = "SELECT MAX(PatientID) FROM patient";
+        String resetAutoIncrementQuery = "ALTER TABLE patient AUTO_INCREMENT = ?";
+        
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setInt(1, patientID);
-
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Patient deleted successfully!");
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
+             Statement maxIDStatement = connection.createStatement()) {
+    
+           
+            deleteStatement.setInt(1, patientID);
+            deleteStatement.executeUpdate();
+    
+            
+            ResultSet maxIDResult = maxIDStatement.executeQuery(maxIDQuery);
+            if (maxIDResult.next()) {
+                int maxID = maxIDResult.getInt(1);
+    
+                
+                if (maxID < patientID) {
+                    int newAutoIncrementValue = patientID;
+                    PreparedStatement resetAutoIncrementStatement = connection.prepareStatement(resetAutoIncrementQuery);
+                    resetAutoIncrementStatement.setInt(1, newAutoIncrementValue);
+                    resetAutoIncrementStatement.executeUpdate();
+                }
             }
+    
         } catch (SQLException e) {
             e.printStackTrace();
         }
