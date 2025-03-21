@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import tester.PatientGUI;
 
 public class AppointmentGUI extends Application {
     private TableView<Appointment> table;
@@ -157,6 +158,9 @@ public class AppointmentGUI extends Application {
             FXCollections.observableArrayList(getAvailableTimeSlots()));
         CheckBox attendedCheck = new CheckBox("Attended");
 
+         Button createPatientButton = new Button("Create Patient");
+        createPatientButton.setOnAction(e -> PatientGUI.showPatientForm(null));
+       
         // Populate fields if editing
         if (existingAppointment != null) {
             datePicker.setValue(existingAppointment.getDateOfAppointment().toLocalDate());
