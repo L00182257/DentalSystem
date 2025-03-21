@@ -31,6 +31,9 @@ public class StartScreen extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 50;");
 
+        receptionistButton.setMaxWidth(Double.MAX_VALUE);
+        dentistButton.setMaxWidth(Double.MAX_VALUE);
+        
         Scene scene = new Scene(layout, 450, 350);
         primaryStage.setScene(scene);
         primaryStage.show();
