@@ -1,4 +1,4 @@
-package model;
+package model.model;
 
 
 public class Patient{
@@ -59,6 +59,10 @@ public class Patient{
 
     public void setEircode(String eircode) {
         this.eircode = eircode;
+    }
+
+    public void setMedCard(Boolean medCard) {
+        this.medCard = medCard;
     }
 
     public int getPatientID() {
