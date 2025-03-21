@@ -16,20 +16,17 @@ public class StartScreen extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Dental Booking System");
 
-        // Title
         Text title = new Text("DENTAL BOOKING SYSTEM");
         title.setFont(Font.font("Arial", 28));
         title.setFill(Color.WHITE);
         title.setStyle("-fx-font-weight: bold; ");
 
-        // Buttons
         Button receptionistButton = createStyledButton("Receptionist");
         receptionistButton.setOnAction(e -> openReceptionistScreen(primaryStage));
 
         Button dentistButton = createStyledButton("Dentist");
         dentistButton.setOnAction(e -> openDentistScreen(primaryStage));
-
-        // Layout
+      
         VBox layout = new VBox(20, title, receptionistButton, dentistButton);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 50;");
@@ -39,11 +36,11 @@ public class StartScreen extends Application {
         primaryStage.show();
     }
 
-    // Button Styling
+    
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setStyle(
-            "-fx-background-color: #3498DB; " +  // Blue color
+            "-fx-background-color: #3498DB; " +  
             "-fx-text-fill: white; " +
             "-fx-font-size: 16px; " +
             "-fx-font-weight: bold; " +
@@ -52,7 +49,7 @@ public class StartScreen extends Application {
             "-fx-cursor: hand;"
         );
         button.setOnMouseEntered(e -> button.setStyle(
-            "-fx-background-color: #2980B9; " + // Darker blue on hover
+            "-fx-background-color: #2980B9; " + 
             "-fx-text-fill: white; " +
             "-fx-font-size: 16px; " +
             "-fx-font-weight: bold; " +
@@ -75,13 +72,12 @@ public class StartScreen extends Application {
    
    private void openReceptionistScreen(Stage primaryStage) {
         ReceptionistScreen receptionistScreen = new ReceptionistScreen();
-        receptionistScreen.start(primaryStage); // Switch to the Receptionist Screen
+        receptionistScreen.start(primaryStage);
     }
 
-    // Open Dentist Screen
     private void openDentistScreen(Stage primaryStage) {
         DentistScreen dentistScreen = new DentistScreen();
-        dentistScreen.start(primaryStage); // Switch to the Dentist Screen
+        dentistScreen.start(primaryStage);
     }
 
     public static void main(String[] args) {
