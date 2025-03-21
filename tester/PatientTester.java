@@ -2,7 +2,6 @@ package tester;
 
 import java.util.List;
 import java.util.Scanner;
-
 import model.Patient;
 import model.PatientDAO;
 
@@ -78,7 +77,9 @@ public class PatientTester {
         System.out.print("Do you have a medical card? (Yes/No): ");
         Boolean medCard = getBooleanInput();
 
-        Patient patient = new Patient(0, firstName, lastName, dateOfBirth, email, street, town, county, eircode, medCard);
+        Double amtOwed = 0.00;
+
+        Patient patient = new Patient(0, firstName, lastName, dateOfBirth, email, street, town, county, eircode, medCard, amtOwed);
         patientDAO.addPatient(patient);
 
         System.out.println("Patient added successfully!");
@@ -181,7 +182,13 @@ public class PatientTester {
         String medCardInput = scanner.nextLine();
         Boolean medCard = medCardInput.isEmpty() ? existingPatient.getMedCard() : Boolean.parseBoolean(medCardInput);
 
-        Patient updatedPatient = new Patient(id, firstName, lastName, dateOfBirth, email, street, town, county, eircode, medCard);
+        System.out.print("Amount Owed (" + existingPatient.getAmtOwed() + "): ");
+        Double amtOwed = existingPatient.getAmtOwed();  // Default to current amount owed
+        if (scanner.hasNextDouble()) {
+            amtOwed = scanner.nextDouble();
+        }
+
+        Patient updatedPatient = new Patient(id, firstName, lastName, dateOfBirth, email, street, town, county, eircode, medCard, amtOwed);
         patientDAO.updatePatient(updatedPatient);
 
         System.out.println("Patient updated successfully!");
