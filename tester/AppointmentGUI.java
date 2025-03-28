@@ -134,8 +134,7 @@ public class AppointmentGUI extends Application {
         timePicker.setValue(availableTime.toLocalTime().toString());
         CheckBox attendedCheck = new CheckBox("Attended");
     
-        // Pre-fill dentist ID
-        Label dentistLabel = new Label("Dentist ID: " + dentistId);
+        Label dentistLabel = new Label(appointmentDAO.getDentistDetails(dentistId));
     
         // Add components to grid
         grid.addRow(0, new Label("Patient:"), patientPicker);
@@ -149,7 +148,7 @@ public class AppointmentGUI extends Application {
         saveButton.setOnAction(e -> handleSave(
             null, // New appointment
             patientPicker.getValue(),
-            String.valueOf(dentistId), // Pass dentist ID as string
+            appointmentDAO.getDentistDetails(dentistId), // Pass dentist ID as string
             treatmentPicker.getValue(),
             datePicker.getValue(),
             timePicker.getValue(),
