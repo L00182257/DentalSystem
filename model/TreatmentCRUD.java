@@ -8,7 +8,7 @@ public class TreatmentCRUD {
     private static Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/dentistdb";
         String username = "root"; // database username
-        String password = "TKJjoq2d.";
+        String password = "password";
 
         return DriverManager.getConnection(url, username, password);
     }
