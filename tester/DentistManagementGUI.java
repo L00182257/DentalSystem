@@ -65,27 +65,37 @@ public class DentistManagementGUI extends Application {
         layout.setPadding(new Insets(20));
         layout.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(layout, 700, 500);
+        Scene scene = new Scene(layout, 1000, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    @SuppressWarnings("unchecked")
-    private void setupTableColumns() {
-        TableColumn<Dentist, Integer> idColumn = new TableColumn<>("ID");
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("dentistID"));
+@SuppressWarnings("unchecked")
+private void setupTableColumns() {
+    TableColumn<Dentist, Integer> idColumn = new TableColumn<>("ID");
+    idColumn.setCellValueFactory(new PropertyValueFactory<>("dentistID"));
 
-        TableColumn<Dentist, String> lastNameColumn = new TableColumn<>("Last Name");
-        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        
-        TableColumn<Dentist, String> firstNameColumn = new TableColumn<>("First Name");
-        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        
-        TableColumn<Dentist, String> specialtyColumn = new TableColumn<>("Specialty");
-        specialtyColumn.setCellValueFactory(new PropertyValueFactory<>("specialty"));
-        
-        table.getColumns().addAll(idColumn, lastNameColumn, firstNameColumn, specialtyColumn);
-    }
+    TableColumn<Dentist, String> lastNameColumn = new TableColumn<>("Last Name");
+    lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+
+    TableColumn<Dentist, String> firstNameColumn = new TableColumn<>("First Name");
+    firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+
+    TableColumn<Dentist, String> awardingBodyColumn = new TableColumn<>("Awarding Body");
+    awardingBodyColumn.setCellValueFactory(new PropertyValueFactory<>("awardingBody"));
+
+    TableColumn<Dentist, String> specialtyColumn = new TableColumn<>("Specialty");
+    specialtyColumn.setCellValueFactory(new PropertyValueFactory<>("specialty"));
+
+    TableColumn<Dentist, String> dobColumn = new TableColumn<>("Date of Birth");
+    dobColumn.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
+
+    TableColumn<Dentist, String> phoneColumn = new TableColumn<>("Phone Number");
+    phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNo"));
+
+    table.getColumns().addAll(idColumn, lastNameColumn, firstNameColumn, awardingBodyColumn, specialtyColumn, dobColumn, phoneColumn);
+}
+
 
     private void loadDentists() {
         ObservableList<Dentist> dentists = FXCollections.observableArrayList(dentistDAO.getAllDentists());
