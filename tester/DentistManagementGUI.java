@@ -200,25 +200,25 @@ private void setupTableColumns() {
         button.setStyle(
                 "-fx-background-color: #3498DB; " +
                         "-fx-text-fill: white; " +
-                        "-fx-font-size: 16px; " +
+                        "-fx-font-size: 14px; " +
                         "-fx-font-weight: bold; " +
-                        "-fx-padding: 10px 20px; " +
+                        "-fx-padding: 10px 16px; " +
                         "-fx-background-radius: 8px; " +
                         "-fx-cursor: hand;");
         button.setOnMouseEntered(e -> button.setStyle(
                 "-fx-background-color: #2980B9; " +
                         "-fx-text-fill: white; " +
-                        "-fx-font-size: 16px; " +
+                        "-fx-font-size: 14px; " +
                         "-fx-font-weight: bold; " +
-                        "-fx-padding: 10px 20px; " +
+                        "-fx-padding: 10px 16px; " +
                         "-fx-background-radius: 8px; " +
                         "-fx-cursor: hand;"));
         button.setOnMouseExited(e -> button.setStyle(
                 "-fx-background-color: #3498DB; " +
                         "-fx-text-fill: white; " +
-                        "-fx-font-size: 16px; " +
+                        "-fx-font-size: 14px; " +
                         "-fx-font-weight: bold; " +
-                        "-fx-padding: 10px 20px; " +
+                        "-fx-padding: 10px 16px; " +
                         "-fx-background-radius: 8px; " +
                         "-fx-cursor: hand;"));
         return button;
