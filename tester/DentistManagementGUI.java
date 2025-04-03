@@ -36,25 +36,25 @@ public class DentistManagementGUI extends Application {
         // Search bar
         searchField = new TextField();
         searchField.setPromptText("Enter Dentist ID");
-        Button searchButton = new Button("Search");
+        Button searchButton =  createStyledButton("Search");
         searchButton.setOnAction(e -> searchDentist());
         HBox searchBox = new HBox(10, searchField, searchButton);
         searchBox.setAlignment(Pos.CENTER);
 
         // Buttons
-        Button addButton = new Button("Add");
+        Button addButton = createStyledButton("Add");
         addButton.setOnAction(e -> showDentistForm(null));
         
-        Button updateButton = new Button("Update");
+        Button updateButton =  createStyledButton("Update");
         updateButton.setOnAction(e -> {
             Dentist selected = table.getSelectionModel().getSelectedItem();
             if (selected != null) showDentistForm(selected);
         });
         
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = createStyledButton("Delete");
         deleteButton.setOnAction(e -> deleteDentist());
 
-        Button backToReceptionistScreen = new Button("Back");
+        Button backToReceptionistScreen = createStyledButton("Back");
         backToReceptionistScreen.setOnAction(e -> backToReceptionistScreen());
         
         HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton, backToReceptionistScreen);
@@ -64,11 +64,13 @@ public class DentistManagementGUI extends Application {
         VBox layout = new VBox(15, searchBox, table, buttonBox);
         layout.setPadding(new Insets(20));
         layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 20px;");
 
         Scene scene = new Scene(layout, 1000, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 
 @SuppressWarnings("unchecked")
 private void setupTableColumns() {
@@ -133,7 +135,7 @@ private void setupTableColumns() {
             phoneNoField.setText(String.valueOf(dentist.getPhoneNo()));
         }
 
-        Button saveButton = new Button("Save");
+        Button saveButton = createStyledButton("Save");
         saveButton.setOnAction(e -> {
             if (dentist == null) {
                 Dentist newDentist = new Dentist(0, lastNameField.getText(), firstNameField.getText(), awardingBodyField.getText(), specialtyField.getText(), dobField.getText(), Integer.parseInt(phoneNoField.getText()));
@@ -172,6 +174,8 @@ private void setupTableColumns() {
         }
     }
 
+    
+
     private void searchDentist() {
         int id = Integer.parseInt(searchField.getText());
         table.getItems().stream().filter(d -> d.getDentistID() == id).findFirst().ifPresent(d -> {
@@ -188,4 +192,36 @@ private void setupTableColumns() {
             e.printStackTrace();
         }
     }
+
+
+
+    private Button createStyledButton(String text) {
+        Button button = new Button(text);
+        button.setStyle(
+                "-fx-background-color: #3498DB; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 16px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10px 20px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-cursor: hand;");
+        button.setOnMouseEntered(e -> button.setStyle(
+                "-fx-background-color: #2980B9; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 16px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10px 20px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-cursor: hand;"));
+        button.setOnMouseExited(e -> button.setStyle(
+                "-fx-background-color: #3498DB; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 16px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10px 20px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-cursor: hand;"));
+        return button;
+    }
+
 }
