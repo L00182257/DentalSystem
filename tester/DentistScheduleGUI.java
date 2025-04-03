@@ -186,14 +186,35 @@ public class DentistScheduleGUI extends Application {
 
     private Button createStyledButton(String text) {
         Button button = new Button(text);
-        button.setStyle("-fx-background-color: #1ABC9C; -fx-text-fill: white; " +
-                       "-fx-font-size: 14px; -fx-font-weight: bold; " +
-                       "-fx-padding: 10px 20px; -fx-background-radius: 5px;");
-        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #16A085;"));
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #1ABC9C;"));
+        button.setStyle(
+            "-fx-background-color: #3498DB; " + 
+            "-fx-text-fill: white; " +
+            "-fx-font-size: 16px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-padding: 10px 20px; " +
+            "-fx-background-radius: 8px; " +
+            "-fx-cursor: hand;"
+        );
+        button.setOnMouseEntered(e -> button.setStyle(
+            "-fx-background-color: #2980B9; " + 
+            "-fx-text-fill: white; " +
+            "-fx-font-size: 16px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-padding: 10px 20px; " +
+            "-fx-background-radius: 8px; " +
+            "-fx-cursor: hand;"
+        ));
+        button.setOnMouseExited(e -> button.setStyle(
+            "-fx-background-color: #3498DB; " + 
+            "-fx-text-fill: white; " + 
+            "-fx-font-size: 16px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-padding: 10px 20px; " +
+            "-fx-background-radius: 8px; " +
+            "-fx-cursor: hand;"
+        ));
         return button;
     }
-
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
