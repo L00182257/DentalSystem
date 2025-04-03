@@ -64,6 +64,7 @@ public class PatientGUI extends Application {
             VBox layout = new VBox(15, searchBox, table, buttonBox);
             layout.setPadding(new Insets(20));
             layout.setAlignment(Pos.CENTER);
+            layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 20px;");
     
             Scene scene = new Scene(layout, 800, 600);
             primaryStage.setScene(scene);
