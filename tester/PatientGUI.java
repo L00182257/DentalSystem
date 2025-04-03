@@ -268,11 +268,30 @@ public class PatientGUI extends Application {
 
     private Button createStyledButton(String text) {
         Button button = new Button(text);
-        button.setStyle("-fx-background-color: #1ABC9C; -fx-text-fill: white; " +
-                       "-fx-font-size: 14px; -fx-font-weight: bold; " +
-                       "-fx-padding: 10px 20px; -fx-background-radius: 5px;");
-        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #16A085;"));
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #1ABC9C;"));
+        button.setStyle(
+            "-fx-background-color: #1ABC9C; -fx-text-fill: white; " +
+            "-fx-font-size: 14px; -fx-font-weight: bold; " +
+            "-fx-padding: 10px 20px; -fx-background-radius: 5px; " +
+            "-fx-min-width: 100px; -fx-min-height: 40px; " + 
+            "-fx-max-width: 100px; -fx-max-height: 40px;"
+        );
+        
+        button.setOnMouseEntered(e -> button.setStyle(
+            "-fx-background-color: #16A085; -fx-text-fill: white; " +
+            "-fx-font-size: 14px; -fx-font-weight: bold; " +
+            "-fx-padding: 10px 20px; -fx-background-radius: 5px; " +
+            "-fx-min-width: 100px; -fx-min-height: 40px; " +  
+            "-fx-max-width: 100px; -fx-max-height: 40px;"
+        ));
+        
+        button.setOnMouseExited(e -> button.setStyle(
+            "-fx-background-color: #1ABC9C; -fx-text-fill: white; " +
+            "-fx-font-size: 14px; -fx-font-weight: bold; " +
+            "-fx-padding: 10px 20px; -fx-background-radius: 5px; " +
+            "-fx-min-width: 100px; -fx-min-height: 40px; " +  
+            "-fx-max-width: 100px; -fx-max-height: 40px;"
+        ));
+    
         return button;
     }
 
