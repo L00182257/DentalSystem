@@ -28,15 +28,20 @@ public class DentistScreen extends Application {
         Button scheduleButton = createStyledButton("Schedule");
         scheduleButton.setOnAction(e -> openScheduleScreen());
 
+        Button appointmentButton = createStyledButton("Appointment");
+        appointmentButton.setOnAction(e -> openAppointmentScreen());
+
         Button backToStartScreen = createStyledButton("Back");
         backToStartScreen.setOnAction(e -> backToStartScreen(primaryStage));
 
         
-        this.layout =  new VBox(20, title,  scheduleButton, backToStartScreen);
+        this.layout =  new VBox(20, title,  scheduleButton, appointmentButton, backToStartScreen);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 50;");
 
-        scheduleButton.setMaxWidth(Double.MAX_VALUE);
+        scheduleButton.setPrefWidth(300);
+        appointmentButton.setPrefWidth(300);
+
 
         Scene scene = new Scene(layout, 450, 450); 
         primaryStage.setScene(scene);
@@ -82,7 +87,13 @@ public class DentistScreen extends Application {
         scheduleGUI.start(primaryStage);  
     }
 
-    
+    private void openAppointmentScreen() {
+        AppointmentGUI appointmentGUI = new AppointmentGUI();
+        layout.getChildren().clear();
+        appointmentGUI.start(primaryStage);
+    }
+
+
 
     private void backToStartScreen(Stage primaryStage) {
         StartScreen startScreen = new StartScreen();

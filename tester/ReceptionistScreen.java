@@ -49,11 +49,11 @@ public class ReceptionistScreen extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 50;");
 
-        appointmentButton.setMaxWidth(Double.MAX_VALUE);
-        scheduleButton.setMaxWidth(Double.MAX_VALUE);
-        treatmentListButton.setMaxWidth(Double.MAX_VALUE);
-        patientListButton.setMaxWidth(Double.MAX_VALUE);
-        dentistListButton.setMaxWidth(Double.MAX_VALUE);
+        appointmentButton.setPrefWidth(300);
+        scheduleButton.setPrefWidth(300);
+        treatmentListButton.setPrefWidth(300);
+        patientListButton.setPrefWidth(300);
+        dentistListButton.setPrefWidth(300);
 
         mainScene = new Scene(layout, 450, 450);
         primaryStage.setScene(mainScene);
