@@ -82,6 +82,8 @@ public class DentistScreen extends Application {
         scheduleGUI.start(primaryStage);  
     }
 
+    
+
     private void backToStartScreen(Stage primaryStage) {
         StartScreen startScreen = new StartScreen();
         try {

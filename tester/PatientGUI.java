@@ -36,25 +36,25 @@ public class PatientGUI extends Application {
             // Search bar
             searchField = new TextField();
             searchField.setPromptText("Enter Patient Name and D.O.B...");
-            Button searchButton = new Button("Search");
+            Button searchButton = createStyledButton("Search");
             searchButton.setOnAction(e -> searchPatient());
             HBox searchBox = new HBox(10, searchField, searchButton);
             searchBox.setAlignment(Pos.CENTER);
     
             // Buttons
-            Button addButton = new Button("Add");
+            Button addButton = createStyledButton("Add");
             addButton.setOnAction(e -> showPatientForm(null));
     
-            Button updateButton = new Button("Update");
+            Button updateButton = createStyledButton("Update");
             updateButton.setOnAction(e -> {
                 Patient selected = table.getSelectionModel().getSelectedItem();
                 if (selected != null) showPatientForm(selected);
             });
     
-            Button deleteButton = new Button("Delete");
+            Button deleteButton = createStyledButton("Delete");
             deleteButton.setOnAction(e -> deletePatient());
     
-            Button backToReceptionistScreen = new Button("Back");
+            Button backToReceptionistScreen = createStyledButton("Back");
             backToReceptionistScreen.setOnAction(e -> backToReceptionistScreen());
     
             HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton, backToReceptionistScreen);
@@ -234,6 +234,45 @@ public class PatientGUI extends Application {
         } else {
             showAlert("Invalid Input", "Please enter First Name, Last Name, and Date of Birth (YYYY-MM-DD).");
         }
+    }
+
+    private Button createStyledButton(String text) {
+        Button button = new Button(text);
+        button.setStyle(
+                "-fx-background-color: #3498DB; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 16px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10px 20px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-cursor: hand;");
+        button.setOnMouseEntered(e -> button.setStyle(
+                "-fx-background-color: #2980B9; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 16px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10px 20px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-cursor: hand;"));
+        button.setOnMouseExited(e -> button.setStyle(
+                "-fx-background-color: #3498DB; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 16px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10px 20px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-cursor: hand;"));
+        return button;
+    }
+
+    private Button createStyledButton(String text) {
+        Button button = new Button(text);
+        button.setStyle("-fx-background-color: #1ABC9C; -fx-text-fill: white; " +
+                       "-fx-font-size: 14px; -fx-font-weight: bold; " +
+                       "-fx-padding: 10px 20px; -fx-background-radius: 5px;");
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #16A085;"));
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #1ABC9C;"));
+        return button;
     }
 
     private void showAlert(String title, String message) {
