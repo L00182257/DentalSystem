@@ -241,29 +241,32 @@ public class PatientGUI extends Application {
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setStyle(
-            "-fx-background-color: #1ABC9C; -fx-text-fill: white; " +
-            "-fx-font-size: 14px; -fx-font-weight: bold; " +
-            "-fx-padding: 10px 20px; -fx-background-radius: 5px; " +
-            "-fx-min-width: 100px; -fx-min-height: 40px; " + 
-            "-fx-max-width: 100px; -fx-max-height: 40px;"
+            "-fx-background-color: #3498DB; " +  
+            "-fx-text-fill: white; " +
+            "-fx-font-size: 14px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-padding: 10px 16px; " +
+            "-fx-background-radius: 8px; " +
+            "-fx-cursor: hand;"
         );
-        
         button.setOnMouseEntered(e -> button.setStyle(
-            "-fx-background-color: #16A085; -fx-text-fill: white; " +
-            "-fx-font-size: 14px; -fx-font-weight: bold; " +
-            "-fx-padding: 10px 20px; -fx-background-radius: 5px; " +
-            "-fx-min-width: 100px; -fx-min-height: 40px; " +  
-            "-fx-max-width: 100px; -fx-max-height: 40px;"
+            "-fx-background-color: #2980B9; " + 
+            "-fx-text-fill: white; " +
+            "-fx-font-size: 14px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-padding: 10px 16px; " +
+            "-fx-background-radius: 8px; " +
+            "-fx-cursor: hand;"
         ));
-        
         button.setOnMouseExited(e -> button.setStyle(
-            "-fx-background-color: #1ABC9C; -fx-text-fill: white; " +
-            "-fx-font-size: 14px; -fx-font-weight: bold; " +
-            "-fx-padding: 10px 20px; -fx-background-radius: 5px; " +
-            "-fx-min-width: 100px; -fx-min-height: 40px; " +  
-            "-fx-max-width: 100px; -fx-max-height: 40px;"
+            "-fx-background-color: #3498DB; " + 
+            "-fx-text-fill: white; " +
+            "-fx-font-size: 14px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-padding: 10px 16px; " +
+            "-fx-background-radius: 8px; " +
+            "-fx-cursor: hand;"
         ));
-    
         return button;
     }
 
