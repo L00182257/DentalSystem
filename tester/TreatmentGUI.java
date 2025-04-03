@@ -38,25 +38,25 @@ public class TreatmentGUI extends Application {
         // Search bar
         searchField = new TextField();
         searchField.setPromptText("Enter Treatment ID");
-        Button searchButton = new Button("Search");
+        Button searchButton = createStyledButton("Search");
         searchButton.setOnAction(e -> searchTreatment());
         HBox searchBox = new HBox(10, searchField, searchButton);
         searchBox.setAlignment(Pos.CENTER);
 
         // Buttons
-        Button addButton = new Button("Add Treatment");
+        Button addButton = createStyledButton("Add Treatment");
         addButton.setOnAction(e -> showAddTreatmentDialog());
 
-        Button updateButton = new Button("Update Treatment");
+        Button updateButton = createStyledButton("Update Treatment");
         updateButton.setOnAction(e -> {
             Treatment selected = table.getSelectionModel().getSelectedItem();
             if (selected != null) showUpdateTreatmentDialog(selected);
         });
 
-        Button deleteButton = new Button("Delete Treatment");
+        Button deleteButton = createStyledButton("Delete Treatment");
         deleteButton.setOnAction(e -> deleteTreatment());
 
-        Button backToReceptionistScreen = new Button("Back");
+        Button backToReceptionistScreen = createStyledButton("Back");
         backToReceptionistScreen.setOnAction(e -> backToReceptionistScreen());
 
         HBox buttonBox = new HBox(10, addButton, updateButton, deleteButton, backToReceptionistScreen);
@@ -66,6 +66,7 @@ public class TreatmentGUI extends Application {
         VBox layout = new VBox(15, searchBox, table, buttonBox);
         layout.setPadding(new Insets(20));
         layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-background-color: #2C3E50; -fx-padding: 20px;");
 
         Scene scene = new Scene(layout, 700, 500);
         primaryStage.setScene(scene);
@@ -215,5 +216,35 @@ public class TreatmentGUI extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    private Button createStyledButton(String text) {
+        Button button = new Button(text);
+        button.setStyle(
+                "-fx-background-color: #3498DB; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 16px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10px 20px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-cursor: hand;");
+        button.setOnMouseEntered(e -> button.setStyle(
+                "-fx-background-color: #2980B9; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 16px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10px 20px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-cursor: hand;"));
+        button.setOnMouseExited(e -> button.setStyle(
+                "-fx-background-color: #3498DB; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 16px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10px 20px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-cursor: hand;"));
+        return button;
     }
 }
