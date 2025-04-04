@@ -1,10 +1,11 @@
 package model;
 
-public class Patient{
+public class Patient {
     private int patientID;
     private String firstName;
     private String lastName;
     private String dateOfBirth;
+    private String phoneNo; // Change phoneNo from int to String
     private String email;
     private String street;
     private String town;
@@ -13,19 +14,22 @@ public class Patient{
     private Boolean medCard;
     private Double amtOwed;
 
-    public Patient(int patientID,String firstName, String lastName, String dateOfBirth, String email, String street, String town, String county, String eircode, Boolean medCard, Double amtOwed) {
+    public Patient(int patientID, String firstName, String lastName, String dateOfBirth, String phoneNo, String email,
+            String street, String town, String county, String eircode, Boolean medCard, Double amtOwed) {
         this.patientID = patientID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
+        this.phoneNo = phoneNo; // Updated to use String for phone number
         this.email = email;
         this.street = street;
         this.town = town;
         this.county = county;
         this.eircode = eircode;
         this.medCard = medCard;
-        this.amtOwed = amtOwed; 
+        this.amtOwed = amtOwed;
     }
+
     public void setPatientID(int patientID) {
         this.patientID = patientID;
     }
@@ -40,6 +44,10 @@ public class Patient{
 
     public void setDOB(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setPhoneNo(String phoneNo) { // Updated to String
+        this.phoneNo = phoneNo;
     }
 
     public void setEmail(String email) {
@@ -71,7 +79,7 @@ public class Patient{
     }
 
     public int getPatientID() {
-        return patientID; 
+        return patientID;
     }
 
     public String getFirstName() {
@@ -84,6 +92,10 @@ public class Patient{
 
     public String getDOB() {
         return dateOfBirth;
+    }
+
+    public String getPhoneNo() { // Updated to return String
+        return phoneNo;
     }
 
     public String getEmail() {
@@ -113,20 +125,22 @@ public class Patient{
     public Double getAmtOwed() {
         return amtOwed;
     }
+
     @Override
     public String toString() {
         return "Patient{" +
-           "id=" + patientID +
-           ", firstName='" + firstName + '\'' +
-           ", lastName='" + lastName + '\'' +
-           ", dateOfBirth='" + dateOfBirth + '\'' +
-           ", email='" + email + '\'' +
-           ", street='" + street + '\'' +
-           ", town='" + town + '\'' +
-           ", county='" + county + '\'' +
-           ", eircode='" + eircode + '\'' +
-           ", medCard=" + medCard + '\'' +
-           ", amtOwed=" + amtOwed +
-           '}';
-}
+                "id=" + patientID +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", phoneNo='" + phoneNo + '\'' + // Updated to use phoneNo as String
+                ", email='" + email + '\'' +
+                ", street='" + street + '\'' +
+                ", town='" + town + '\'' +
+                ", county='" + county + '\'' +
+                ", eircode='" + eircode + '\'' +
+                ", medCard=" + medCard + '\'' +
+                ", amtOwed=" + amtOwed +
+                '}';
+    }
 }
