@@ -62,6 +62,9 @@ public class PatientTester {
         System.out.print("Email: ");
         String email = scanner.nextLine();
 
+        System.out.print("PhoneNo: ");
+        String phoneNo = scanner.nextLine();
+
         System.out.print("Street: ");
         String street = scanner.nextLine();
 
@@ -78,8 +81,9 @@ public class PatientTester {
         Boolean medCard = getBooleanInput();
 
         Double amtOwed = 0.00;
- 
-        Patient patient = new Patient(0, firstName, lastName, dateOfBirth, email, street, town, county, eircode, medCard, amtOwed);
+
+        Patient patient = new Patient(0, firstName, lastName, dateOfBirth, phoneNo, email, street, town, county,
+                eircode, medCard, amtOwed);
         patientDAO.addPatient(patient);
 
         System.out.println("Patient added successfully!");
@@ -92,7 +96,8 @@ public class PatientTester {
         } else {
             System.out.println("\nList of Patients:");
             for (Patient p : patients) {
-                System.out.println("ID: " + p.getPatientID() + " | Name: " + p.getFirstName() + " " + p.getLastName() + " | Email: " + p.getEmail());
+                System.out.println("ID: " + p.getPatientID() + " | Name: " + p.getFirstName() + " " + p.getLastName()
+                        + " | Email: " + p.getEmail());
             }
         }
     }
@@ -149,6 +154,12 @@ public class PatientTester {
             dateOfBirth = existingPatient.getDOB();
         }
 
+        System.out.print("Phone Number (" + existingPatient.getPhoneNo() + "): ");
+        String phoneNo = scanner.nextLine();
+        if (phoneNo.isEmpty()) {
+            phoneNo = existingPatient.getPhoneNo();
+        }
+
         System.out.print("Email (" + existingPatient.getEmail() + "): ");
         String email = scanner.nextLine();
         if (email.isEmpty()) {
@@ -184,12 +195,13 @@ public class PatientTester {
         Boolean medCard = medCardInput.isEmpty() ? existingPatient.getMedCard() : Boolean.parseBoolean(medCardInput);
 
         System.out.print("Amount Owed (" + existingPatient.getAmtOwed() + "): ");
-        Double amtOwed = existingPatient.getAmtOwed();  // Default to current amount owed
+        Double amtOwed = existingPatient.getAmtOwed(); // Default to current amount owed
         if (scanner.hasNextDouble()) {
             amtOwed = scanner.nextDouble();
         }
 
-        Patient updatedPatient = new Patient(id, firstName, lastName, dateOfBirth, email, street, town, county, eircode, medCard, amtOwed);
+        Patient updatedPatient = new Patient(id, firstName, lastName, dateOfBirth, phoneNo, email, street, town, county,
+                eircode, medCard, amtOwed);
         patientDAO.updatePatient(updatedPatient);
 
         System.out.println("Patient updated successfully!");
@@ -205,7 +217,8 @@ public class PatientTester {
             return;
         }
 
-        System.out.print("Are you sure you want to delete " + patient.getFirstName() + " " + patient.getLastName() + "? (yes/no): ");
+        System.out.print("Are you sure you want to delete " + patient.getFirstName() + " " + patient.getLastName()
+                + "? (yes/no): ");
         String confirmation = scanner.nextLine().toLowerCase();
 
         if (confirmation.equals("yes")) {
