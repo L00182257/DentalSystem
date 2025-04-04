@@ -176,12 +176,33 @@ private void setupTableColumns() {
 
     
 
+    // private void searchDentist() {
+    //     int id = Integer.parseInt(searchField.getText());
+    //     table.getItems().stream().filter(d -> d.getDentistID() == id).findFirst().ifPresent(d -> {
+    //         table.getSelectionModel().select(d);
+    //         table.scrollTo(d);
+    //     });
+    // }
+
+    
     private void searchDentist() {
-        int id = Integer.parseInt(searchField.getText());
-        table.getItems().stream().filter(d -> d.getDentistID() == id).findFirst().ifPresent(d -> {
-            table.getSelectionModel().select(d);
-            table.scrollTo(d);
-        });
+        String searchText = searchField.getText().trim().toLowerCase();
+        
+        if (searchText.isEmpty()) {
+            table.getSelectionModel().clearSelection();
+            return;
+        }
+    
+        for (Dentist d : table.getItems()) {
+            if (String.valueOf(d.getDentistID()).equals(searchText) || 
+                d.getFirstName().toLowerCase().contains(searchText) || 
+                d.getLastName().toLowerCase().contains(searchText)) {
+                
+                table.getSelectionModel().select(d);
+                table.scrollTo(d);
+                return; // Stop after selecting the first match
+            }
+        }
     }
 
     private void backToReceptionistScreen() {
