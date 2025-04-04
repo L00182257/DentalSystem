@@ -12,6 +12,8 @@ import model.DentistDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.Validation;
+import tester.PatientGUI;
 
 public class DentistManagementGUI extends Application {
     private TableView<Dentist> table;
@@ -126,6 +128,13 @@ private void setupTableColumns() {
         TextField phoneNoField = new TextField();
         phoneNoField.setPromptText("Phone Number");
 
+        // Replace the validation setup calls with these:
+        PatientGUI.setupValidationStyling(firstNameField, Validation::validateName);
+        PatientGUI.setupValidationStyling(lastNameField, Validation::validateName);
+        PatientGUI.setupValidationStyling(dobField, Validation::validateDateOfBirth);
+        PatientGUI.setupValidationStyling(phoneNoField, Validation::validatePhone);
+    
+
         if (dentist != null) {
             lastNameField.setText(dentist.getLastName());
             firstNameField.setText(dentist.getFirstName());
@@ -175,16 +184,6 @@ private void setupTableColumns() {
     }
 
     
-
-    // private void searchDentist() {
-    //     int id = Integer.parseInt(searchField.getText());
-    //     table.getItems().stream().filter(d -> d.getDentistID() == id).findFirst().ifPresent(d -> {
-    //         table.getSelectionModel().select(d);
-    //         table.scrollTo(d);
-    //     });
-    // }
-
-    
     private void searchDentist() {
         String searchText = searchField.getText().trim().toLowerCase();
         
@@ -204,6 +203,7 @@ private void setupTableColumns() {
             }
         }
     }
+
 
     private void backToReceptionistScreen() {
         ReceptionistScreen receptionistScreen = new ReceptionistScreen();

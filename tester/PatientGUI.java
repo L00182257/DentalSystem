@@ -1,5 +1,7 @@
 package tester;
 
+import java.util.function.Function;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.Patient;
 import model.PatientDAO;
+import model.Validation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -120,6 +123,28 @@ public class PatientGUI extends Application {
         table.setItems(patients);
     }
 
+    public static void setupValidationStyling(TextField field, Function<String, Boolean> validator) {
+            field.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue) { // When focus is lost
+                    if (!validator.apply(field.getText())) {
+                        field.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
+                    } else {
+                        field.setStyle("");
+                    }
+                }
+            });
+        }
+        
+        public static boolean validateAllFields(TextField... fields) {
+            boolean allValid = true;
+            for (TextField field : fields) {
+                if (field.getStyle().contains("red")) {
+                    allValid = false;
+                }
+            }
+            return allValid;
+        }
+
     static void showPatientForm(Patient patient) {
         Stage formStage = new Stage();
         formStage.setTitle(patient == null ? "Add Patient" : "Update Patient");
@@ -150,6 +175,19 @@ public class PatientGUI extends Application {
         eircodeField.setPromptText("Eircode");
         TextField amtOwedField = new TextField();
         amtOwedField.setPromptText("Amount Owed");
+        
+            // Replace the validation setup calls with these:
+                setupValidationStyling(firstNameField, Validation::validateName);
+                setupValidationStyling(lastNameField, Validation::validateName);
+                setupValidationStyling(dobField, Validation::validateDateOfBirth);
+                setupValidationStyling(phoneNoField, Validation::validatePhone);
+                setupValidationStyling(emailField, Validation::validateEmail);
+                setupValidationStyling(streetField, Validation::validateStreet);
+                setupValidationStyling(townField, Validation::validateTown);
+                setupValidationStyling(countyField, Validation::validateCounty);
+                setupValidationStyling(eircodeField, Validation::validateEircode);
+                setupValidationStyling(amtOwedField, s -> Validation.validateAmount(s));
+            
 
         if (patient != null) {
             firstNameField.setText(patient.getFirstName());
