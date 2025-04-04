@@ -610,7 +610,43 @@ public List<Appointment> getAppointmentsByDate(LocalDate date) {
     return appointments;
 }
 
+public void updateAmountOwedIfAttended(int appointmentId) {
+    String treatmentQuery = "SELECT t.price, p.medicalCard, p.amountOwed, p.patientID " +
+                            "FROM appointment a " +
+                            "JOIN treatment t ON a.treatmentID = t.treatmentID " +
+                            "JOIN patient p ON a.patientID = p.patientID " +
+                            "WHERE a.appointmentID = ?";
+    String updateAmountQuery = "UPDATE patient SET amountOwed = ? WHERE patientID = ?";
 
+    try (Connection conn = getConnection();
+         PreparedStatement treatmentStmt = conn.prepareStatement(treatmentQuery);
+         PreparedStatement updateStmt = conn.prepareStatement(updateAmountQuery)) {
+
+        treatmentStmt.setInt(1, appointmentId);
+        ResultSet rs = treatmentStmt.executeQuery();
+
+        if (rs.next()) {
+            double price = rs.getDouble("price");
+            boolean hasMedicalCard = rs.getBoolean("medicalCard");
+            double currentAmountOwed = rs.getDouble("amountOwed");
+            int patientID = rs.getInt("patientID");
+
+            if (hasMedicalCard) {
+                price *= 0.6; // 40% discount
+            }
+
+            double newAmountOwed = currentAmountOwed + price;
+
+            // Update the amount owed in the patient table
+            updateStmt.setDouble(1, newAmountOwed);
+            updateStmt.setInt(2, patientID);
+            updateStmt.executeUpdate();
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
 
     public String getDentistDetails(int dentistId) {
         String query = "SELECT DentistID, FirstName, LastName FROM dentist WHERE DentistID = ?";
@@ -621,7 +657,7 @@ public List<Appointment> getAppointmentsByDate(LocalDate date) {
             if (resultSet.next()) {
                 String firstName = resultSet.getString("FirstName");
                 String lastName = resultSet.getString("LastName");
-                return dentistId+ firstName + " " + lastName;
+                return dentistId + ": "+ firstName + " " + lastName;
             }
         } catch (SQLException e) {
             e.printStackTrace();
