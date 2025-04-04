@@ -333,14 +333,23 @@ public class AppointmentGUI extends Application {
             Time sqlTime = Time.valueOf(LocalTime.parse(time));
 
             if (existing == null) {
-                Appointment newAppointment = new Appointment(
-                    sqlDate, sqlTime, attended, treatmentId, patientId, dentistId);
+                Appointment newAppointment = new Appointment(sqlDate, sqlTime, attended, treatmentId, patientId, dentistId);
                 appointmentDAO.addAppointment(newAppointment);
+            
+                // If attended, update the amount owed
+                if (attended) {
+                    appointmentDAO.updateAmountOwedIfAttended(newAppointment.getAppointmentID());
+                }
             } else {
                 existing.setDateOfAppointment(sqlDate);
                 existing.setTimeOfAppointment(sqlTime);
                 existing.setAttended(attended);
                 appointmentDAO.updateAppointment(existing);
+            
+                // If attended, update the amount owed
+                if (attended) {
+                    appointmentDAO.updateAmountOwedIfAttended(existing.getAppointmentID());
+                }
             }
 
             refreshTable();
