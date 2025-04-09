@@ -176,7 +176,7 @@ public class PatientGUI extends Application {
         TextField amtOwedField = new TextField();
         amtOwedField.setPromptText("Amount Owed");
         
-            // Replace the validation setup calls with these:
+            
                 setupValidationStyling(firstNameField, Validation::validateName);
                 setupValidationStyling(lastNameField, Validation::validateName);
                 setupValidationStyling(dobField, Validation::validateDateOfBirth);
@@ -243,18 +243,18 @@ public class PatientGUI extends Application {
         grid.add(phoneNoField, 1, 3);
         grid.add(new Label("Email:"), 0, 4);
         grid.add(emailField, 1, 4);
-        grid.add(medCardCheckBox, 1, 5); // Assuming you want it on row 5 (you can adjust this as needed)
+        grid.add(medCardCheckBox, 1, 5);
         grid.add(new Label("Street:"), 0, 6);
-        grid.add(streetField, 1, 6); // Corrected to row 6
-        grid.add(new Label("Town:"), 0, 7); // Corrected to row 7
-        grid.add(townField, 1, 7); // Corrected to row 7
+        grid.add(streetField, 1, 6); 
+        grid.add(new Label("Town:"), 0, 7); 
+        grid.add(townField, 1, 7);
         grid.add(new Label("County:"), 0, 8);
         grid.add(countyField, 1, 8);
         grid.add(new Label("Eircode:"), 0, 9);
         grid.add(eircodeField, 1, 9);
-        grid.add(new Label("Amount Owed:"), 0, 10); // Corrected to row 10
-        grid.add(amtOwedField, 1, 10); // Corrected to row 10
-        grid.add(saveButton, 1, 11); // Corrected to row 11
+        grid.add(new Label("Amount Owed:"), 0, 10); 
+        grid.add(amtOwedField, 1, 10); 
+        grid.add(saveButton, 1, 11); 
 
         Scene formScene = new Scene(grid, 400, 450);
         formStage.setScene(formScene);
