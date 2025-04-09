@@ -365,7 +365,7 @@ public class AppointmentCRUD {
     // }
     public List<String> getPatients() {
         List<String> patients = new ArrayList<>();
-        String query = "SELECT PatientID, CONCAT(FirstName, ' ', LastName) AS FullName FROM Patient";
+        String query = "SELECT PatientID, CONCAT(FirstName, ' ', LastName) AS FullName, DateOfBirth FROM Patient";
     
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
@@ -374,7 +374,8 @@ public class AppointmentCRUD {
             while (resultSet.next()) {
                 int id = resultSet.getInt("PatientID");
                 String fullName = resultSet.getString("FullName");
-                patients.add(id + ": " + fullName); // Format: "ID: Name"
+                String dob = resultSet.getString("DateOfBirth");
+                patients.add(id + ": " + fullName + " (DOB: " + dob + ")");
             }
         } catch (SQLException e) {
             e.printStackTrace();
